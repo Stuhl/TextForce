@@ -13,7 +13,7 @@ import GameMath from "./utility/Math"
 import Component from "./utility/Component"
 import BattleCalculator from "./utility/BattleCalculator"
 
-class Engine {
+class TextForce {
   constructor() {
     this.isRunning = false
     this.Game = Game
@@ -37,4 +37,4 @@ class Engine {
   }
 }
 
-export default new Engine()
+export default TextForce

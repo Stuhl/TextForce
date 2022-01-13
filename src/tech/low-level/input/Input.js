@@ -1,31 +1,24 @@
-import PubSub from "./PubSub"
-
 class Input {
   constructor(keys = {}) {
     this.keys = keys
-    this.events = new PubSub()
-    this.isListening = false
+    this.listening = false
   }
 
-  _hasKey(key) {
-    return this.keys.hasOwnProperty(key)
-  }
-
-  listen() {
+  attach() {
     document.addEventListener("keydown", this.handleKeyDown.bind(this))
-    this.isListening = true
+    this.setListening(true)
   }
 
   remove() {
     document.removeEventListener("keydown", this.handleKeyDown.bind(this))
-    this.isListening = false
+    this.setListening(false)
   }
 
-  reset() {
-    this.events = new PubSub()
+  setListening(state) {
+    this.listening = bool
   }
 
-  addKey(key, name) {
+  setKey(key, name) {
     if (this._hasKey(key)) {
       throw new Error(`Input::addKey(): Adding key failed. key '${key}' already exists.`)
     }
@@ -53,6 +46,10 @@ class Input {
       event.preventDefault()
       this.events.publish("input", pressed)
     }
+  }
+
+  _hasKey(key) {
+    return this.keys.hasOwnProperty(key)
   }
 }
 
