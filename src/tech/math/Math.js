@@ -30,6 +30,4 @@ class GameMath {
   }
 }
 
-console.log(GameMath.forwardScatter(5, 10))
-
 export default GameMath

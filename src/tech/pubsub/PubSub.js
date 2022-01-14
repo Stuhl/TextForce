@@ -1,7 +1,7 @@
 import AbstractPubSub from "./abstract-PubSub.js"
-import ErrorLogger from "../../common/logger/error-logger.js"
-
-const pubSubErrorLogger = new ErrorLogger("PubSub")
+// import ErrorLogger from "../../common/logger/error-logger.js"
+//
+// const pubSubErrorLogger = new ErrorLogger("PubSub")
 
 class PubSub extends AbstractPubSub {
   constructor() {
