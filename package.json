@@ -17,5 +17,8 @@
     "url": "https://github.com/Stuhl/TextForce/issues"
   },
   "homepage": "https://github.com/Stuhl/TextForce#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "parcel": "^2.2.0"
+  }
 }

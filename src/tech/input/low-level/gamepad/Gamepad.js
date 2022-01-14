@@ -1,3 +1,8 @@
+import AbstractInput from "../../AbstractInput.js"
+
+import xbox from "./variants/xbox"
+import playstation from "./variants/playstation"
+
 const defaultConfig = {
   keys: {
     "A": "CONFIRM",
@@ -21,7 +26,6 @@ class Gamepad extends AbstractInput {
 
   update() {
     const self = this
-
     self.render(this._getPressedButton())
     requestAnimationFrame(self.update.bind(self))
   }
@@ -31,8 +35,9 @@ class Gamepad extends AbstractInput {
   }
 
   render(pressed) {
-    const pressedButton = document.querySelector("#pressed-button")
-    pressedButton.innerHTML = "Button pressed: " + pressed
+    if (pressed) {
+      console.log(`Button pressed: ${pressed}`)
+    }
   }
 
   attach() {
@@ -111,51 +116,13 @@ class Gamepad extends AbstractInput {
 
   _getMap(variant) {
     if (variant === "xbox") {
-      return {
-         0: "A",
-         1: "B",
-         2: "X",
-         3: "Y",
-         4: "LB",
-         5: "RB",
-         6: "LT",
-         7: "RT",
-         8: "SELECT",
-         9: "START",
-        10: "LS",
-        11: "RS",
-        12: "CROSS-UP",
-        13: "CROSS-DOWN",
-        14: "CROSS-LEFT",
-        15: "CROSS-RIGHT",
-        16: "CENTER"
-      }
+      return xbox()
     }
 
     if (variant === "playstation") {
-      return {
-         0: "X",
-         1: "CIRCLE",
-         2: "SQUARE",
-         3: "TRIANGLE",
-         4: "L1",
-         5: "R1",
-         6: "L2",
-         7: "R2",
-         8: "SELECT",
-         9: "START",
-        10: "L3",
-        11: "R3",
-        12: "CROSS-UP",
-        13: "CROSS-DOWN",
-        14: "CROSS-LEFT",
-        15: "CROSS-RIGHT",
-        16: "CENTER"
-      }
+      return playstation()
     }
   }
 }
 
-const gamepad = new Gamepad()
-
-gamepad.attach()
+export default Gamepad
