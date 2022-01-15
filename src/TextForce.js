@@ -1,5 +1,5 @@
 // TECH
-// import Game from "./tech/game/Game"
+import Game from "./tech/game/Game"
 import PubSub from "./tech/pubsub/PubSub"
 import Scene from "./tech/Scene"
 import GameMath from "./tech/math/Math"
