@@ -6,18 +6,9 @@ import GameMath from "./tech/math/Math"
 
 class TextForce {
   static Math = GameMath
-
-  // Game() {
-  //   return Game
-  // }
-
-  PubSub() {
-    return PubSub()
-  }
-
-  Scene() {
-    return Scene()
-  }
+  static PubSub = PubSub
+  static Scene = Scene
+  static Game = Game
 }
 
 export default TextForce

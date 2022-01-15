@@ -1,7 +1,4 @@
 import AbstractPubSub from "./abstract-PubSub.js"
-// import ErrorLogger from "../../common/logger/error-logger.js"
-//
-// const pubSubErrorLogger = new ErrorLogger("PubSub")
 
 class PubSub extends AbstractPubSub {
   constructor() {
@@ -12,96 +9,68 @@ class PubSub extends AbstractPubSub {
   publish(name, args) {
     this._assertPublish(name)
 
-    for (let subscriber of this.events[name]) {
-      subscriber.fn(args)
-    }
-  }
-
-  subscribe(name, fn, key) {
-    if (name === undefined || fn === undefined) {
-      throw new Error(this.errorHandlingTitle + " Missing name or fn parameter.")
-    }
-    this._checkName(name)
-    this._isKeyValid(name, key)
-
-
-    this.events[name] = this.events[name] || []
-    this.events[name].push({
-      fn,
-      key
-    })
-  }
-
-  unsubscribe(name, key) {
-    this._checkName(name)
-    this._isRegistered(name)
-    this._isEmpty()
-    this._isKeyRegistered(name, key)
-
-    this.events[name].forEach((subscriber, i) => {
-      if (subscriber.key === key) {
-        this.events[name].splice(i, 1)
+    if (this.events[name]) {
+      for (let callback of this.events[name]) {
+        callback(args)
       }
-    })
+    }
   }
 
-  reset() {
+  subscribe(name, callback) {
+    this._assertSubscribe(name)
+
+    this.events[name] = this.events[name] ? this.events[name].concat(callback) : [callback]
+  }
+
+  unsubscribe(name, callback) {
+    this._assertUnsubscribe(name)
+
+    const targetArray = this.events[name]
+    const index = targetArray.indexOf(callback)
+    targetArray.splice(index, 1)
+
+    if (targetArray.length === 0) {
+      delete this.events[name]
+    }
+  }
+
+  clear() {
     this.events = {}
-    return true
   }
 
   _assertPublish(name) {
-    this._checkName(name)
-    this._isRegistered(name)
-    this._isEmpty()
+    this._isTruthy(name)
+    this._isString(name)
   }
 
-  _assertSubscribe() {
-
+  _assertSubscribe(name) {
+    this._isTruthy(name)
+    this._isString(name)
   }
 
-  _assertUnsubscribe() {
-
+  _assertUnsubscribe(name) {
+    this._isTruthy(name)
+    this._isString(name)
+    // this._isRegistered(name)
   }
 
-  _checkName(name) {
-    if (name.length === 0) {
-      throw new Error(this.errorHandlingTitle + " Name parameter has length 0.")
+  _isTruthy(name) {
+    if (!name) {
+      throw new Error(`PubSub::_isTruthy(): Parameter 'name' cannot be falsy.`)
     }
   }
 
-  _isEmpty() {
-    if (Object.keys(this.events).length <= 0) {
-      throw new Error(this.errorHandlingTitle + " Event object is empty.")
+  _isString(name) {
+    if (typeof name !== "string") {
+      throw new Error(`PubSub::_isString(): Parameter 'name' has to be a string.`)
     }
   }
 
   _isRegistered(name) {
     if (!this.events.hasOwnProperty(name)) {
-      throw new Error(this.errorHandlingTitle + " Event is not registered.")
-    }
-  }
-
-  _isKeyValid(name, key) {
-    const event = this.events[name]
-
-    if (event) {
-      const keyAlreadyInUse = event.find(subscriber => subscriber.key === key)
-
-      if (keyAlreadyInUse) {
-        throw new Error(this.errorHandlingTitle + " Key is already in use.")
-      }
-    }
-  }
-
-  _isKeyRegistered(name, key) {
-    const event = this.events[name]
-    const keyIsRegistered = event.find(subscriber => subscriber.key === key)
-    if (!keyIsRegistered) {
-      throw new Error(this.errorHandlingTitle + " Key not found.")
+      throw new Error(`PubSub::_isRegistered(): Event '${name}' is not registered in the PubSub system.'`)
     }
   }
 }
 
-
-const pubsub = new PubSub()
+export default PubSub

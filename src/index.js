@@ -1,5 +1,15 @@
 import TextForce from "./TextForce"
 
+const pubSub = new TextForce.PubSub()
+
+
+const logger = () => {}
+
+// pubSub.publish("input")
+pubSub.subscribe(2, logger)
+pubSub.unsubscribe("input", logger)
+console.log(pubSub)
+
 class Player {
   constructor() {
     this.hp = 100
