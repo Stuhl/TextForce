@@ -1,4 +1,4 @@
-import AbstractInput from "../../AbstractInput"
+import AbstractInput from "../../high-level/AbstractInput"
 
 const defaultConfig = {
   keys: {

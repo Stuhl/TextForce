@@ -1,4 +1,5 @@
-import AbstractInput from "../../AbstractInput.js"
+import AbstractInput from "../../high-level/AbstractInput.js"
+import configInterface from "./configInterface.js"
 
 import xbox from "./variants/xbox"
 import playstation from "./variants/playstation"
@@ -15,9 +16,12 @@ const defaultConfig = {
   mapping: "xbox"
 }
 
+configInterface(defaultConfig)
+
 class Gamepad extends AbstractInput {
   constructor(config = defaultConfig) {
     super("Gamepad")
+    configInterface(config)
     this.keys = config.keys
     this.listening = false
     this.gamepad = null
