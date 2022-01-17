@@ -1,4 +1,4 @@
-class Element {
+class Text {
   constructor(element, name, innerHTML) {
     this.element = document.createElement(element)
     this.name = name
@@ -8,13 +8,28 @@ class Element {
     this.anchor = "standard"
   }
 
-  getCoord() {
-    const coord = this.element.getBoundingClientRect()
-    return {
-      x: coord.x,
-      y: coord.y,
-      height: coord.height,
-      width: coord.width
+  getX() {
+    if (this.anchor === "center") {
+      const coord = this.getCoord()
+      const offset = coord.width / 2
+      return (value - offset)
+    }
+
+    if (this.anchor === "standard") {
+
+      return this.getCoord().x
+    }
+  }
+
+  getY() {
+    if (this.anchor === "center") {
+      const coord = this.getCoord()
+      const offset = coord.height / 2
+      return (value - offset)
+    }
+
+    if (this.anchor === "standard") {
+      return this.getCoord().y
     }
   }
 
@@ -42,16 +57,34 @@ class Element {
     }
   }
 
+  setText(newText) {
+    this.element.innerHTML = newText
+  }
+
+  setColor(hsla) {
+    this.element.style.color = hsla
+  }
+
+  getCoord() {
+    const coord = this.element.getBoundingClientRect()
+    return {
+      x: coord.x,
+      y: coord.y,
+      height: coord.height,
+      width: coord.width
+    }
+  }
+
   scale(value) {
     this.element.style.transform = `scale(${value})`
   }
 
-  show(bool) {
-    if (bool) {
-      this.element.style.display = "block"
-    } else {
-      this.element.style.display = "none"
-    }
+  show() {
+    this.element.style.display = "block"
+  }
+
+  hide() {
+    this.element.style.display = "none"
   }
 
   setAnchor(name) {
@@ -77,4 +110,4 @@ class Element {
   }
 }
 
-export default Element
+export default Text

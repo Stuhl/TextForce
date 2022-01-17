@@ -98,9 +98,9 @@ const writerEffect = (ms) => {
 
 const testWriterEffect = async () => {
   const text = writerEffect(20)
-  const text2 =  writerEffect(50)
-  const text3 =  writerEffect(100)
-  const text4 =  writerEffect(200)
+  const text2 =  writerEffect(30)
+  const text3 =  writerEffect(40)
+  const text4 =  writerEffect(50)
 
   document.body.appendChild(text.element)
   document.body.appendChild(text2.element)
@@ -112,13 +112,60 @@ const testWriterEffect = async () => {
   text3.start()
   text4.start()
 
-  text.on("done", () => {
-    console.log("text1 is done.")
-  })
-
-  text2.on("done", () => {
-    console.log("text2 is done.")
+  text.on("done", (writerObject) => {
+    console.log(writerObject.element.innerHTML)
   })
 }
 
-testWriterEffect()
+// testWriterEffect()
+//
+
+
+const testTextClass = () => {
+  const playerStats = new TextForce.Game.Text("pre", "playerStats", "Player Stats")
+  const playerHealth = new TextForce.Game.Text("pre", "playerHealth", "Health:")
+  const playerHealthValues = new TextForce.Game.Text("pre", "playerHealthValues", "80/100")
+  const playerManaValues = new TextForce.Game.Text("pre", "playerManaValues", "50/64")
+  const playerMana = new TextForce.Game.Text("pre", "playerMana", "  Mana:")
+  const playerExp = new TextForce.Game.Text("pre", "playerExp", "   Exp:")
+
+  const playerUIGroup = new TextForce.Game.Group([playerStats, playerHealth, playerMana, playerExp, playerHealthValues, playerManaValues])
+
+  document.body.appendChild(playerStats.element)
+  document.body.appendChild(playerHealth.element)
+  document.body.appendChild(playerMana.element)
+  document.body.appendChild(playerExp.element)
+  document.body.appendChild(playerHealthValues.element)
+  document.body.appendChild(playerManaValues.element)
+
+  playerStats.show()
+  playerHealth.show()
+  playerMana.show()
+  playerExp.show()
+  playerHealthValues.show()
+
+  // playerExp.hide()
+
+  playerStats.setY(20)
+  playerHealth.setY(50)
+  playerMana.setY(70)
+  playerExp.setY(90)
+
+  playerHealthValues.setY(50)
+  playerHealthValues.setX(playerHealth.getX() + 80)
+  playerHealthValues.setColor("hsla(120, 100%, 30%, 1)")
+
+  playerManaValues.setY(70)
+  playerManaValues.setX(playerMana.getX() + 78)
+  playerManaValues.setColor("hsla(220, 100%, 50%, 1)")
+
+
+  playerUIGroup.translateX(100)
+  playerUIGroup.translateY(100)
+  playerUIGroup.scale(1.5)
+
+  // playerHealth.setText("Health: 100/100")
+  // playerMana.setText("  Mana: 60/64")
+}
+
+// testTextClass()
