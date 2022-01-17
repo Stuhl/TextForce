@@ -73,7 +73,7 @@ const testPubSub = () => {
 const testGameClass = () => {
   const game = new TextForce.Game({
     input: {
-      device: "blyatz",
+      device: "gamepad",
       keys: {
         "A": "CONFIRM",
         "RT": "FIRE",
@@ -85,4 +85,40 @@ const testGameClass = () => {
   console.log(game)
 }
 
-testGameClass()
+// testGameClass()
+
+
+
+const writerEffect = (ms) => {
+  const pre = document.createElement("PRE")
+  pre.innerHTML = "You are a warrior of the kingdoms. Your fate will soon be concluded."
+  const text = new TextForce.Effects.Writer(pre, ms)
+  return text
+}
+
+const testWriterEffect = async () => {
+  const text = writerEffect(20)
+  const text2 =  writerEffect(50)
+  const text3 =  writerEffect(100)
+  const text4 =  writerEffect(200)
+
+  document.body.appendChild(text.element)
+  document.body.appendChild(text2.element)
+  document.body.appendChild(text3.element)
+  document.body.appendChild(text4.element)
+
+  text.start()
+  text2.start()
+  text3.start()
+  text4.start()
+
+  text.on("done", () => {
+    console.log("text1 is done.")
+  })
+
+  text2.on("done", () => {
+    console.log("text2 is done.")
+  })
+}
+
+testWriterEffect()
