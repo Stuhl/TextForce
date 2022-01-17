@@ -1,5 +1,6 @@
 import InputFactory from "../input/factory/InputFactory"
-// import Text from "./Text"
+import Text from "../text/Text"
+import Group from "../group/Group"
 // import Storage from "./Storage"
 // import EventManager from "./managers/EventManager"
 // import ObjectManager from "./managers/ObjectManager"
@@ -16,6 +17,9 @@ const defaultConfig = {
 }
 
 class Game {
+  static Text = Text
+  static Group = Group
+
   constructor(config = defaultConfig) {
     this.input = InputFactory.create(config.input)
 

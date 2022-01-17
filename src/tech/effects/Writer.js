@@ -4,51 +4,54 @@ class Writer {
   constructor(element, speed) {
     this.element = element
     this.speed = speed
+    this.events = {
+      done: () => {}
+    }
     this.state = {
       isDone: false
     }
-    this.onDoneCallback = () => {}
-  }
-
-  resetState() {
-    this.state = {
-      isDone: false
-    }
-  }
-
-  setIsDone(state) {
-    this.state.isDone = state
-  }
-
-  done() {
-    this.onDoneCallback(this)
   }
 
   on(event, callback) {
     if (event === "done") {
-      this.onDoneCallback = callback
+      this.events.done = callback
     }
   }
 
   start() {
-    const innerHTML = this.element.innerHTML
     let timer = this.speed
-    let characterCounter = 0
-    const lastCharacterIndex = innerHTML.length - 1
-
-    console.log(lastCharacterIndex === characterCounter)
+    const characters = this.getArrayOfCharacters()
+    const lastCharacterIndex = characters.length - 1
 
     this.element.innerHTML = ""
 
-    Array.from(innerHTML).forEach((character, index) => {
-      setTimeout(() => {
-        if (index === lastCharacterIndex) {
-          this.done()
-        }
-        this.element.innerHTML += character
-      }, timer)
+    characters.forEach((character, index) => {
+      this.setCharacterTimeout({
+        timer,
+        index,
+        lastCharacterIndex,
+        character
+      })
       timer += this.speed
     })
+  }
+
+  getArrayOfCharacters() {
+    const innerHTML = this.element.innerHTML
+    return Array.from(innerHTML)
+  }
+
+  setCharacterTimeout(options) {
+    setTimeout(() => {
+      if (options.index === options.lastCharacterIndex) {
+        this._emit("done", this)
+      }
+      this.element.innerHTML += options.character
+    }, options.timer)
+  }
+
+  _emit(event, args) {
+    this.events[event](args)
   }
 }
 
