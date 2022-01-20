@@ -73,17 +73,22 @@ const testPubSub = () => {
 
 
 const testGameClass = () => {
+  const codSound = new URL("./test_assets/lvl_up_sound.mp3", import.meta.url)
+
   const game = new TextForce.Game({
     input: {
       device: "keyboard",
       keys: {
-        "A": "CONFIRM",
-        "RT": "FIRE",
-        "RB": "RELOAD"
+        "w": "UP",
+        "a": "LEFT",
+        "s": "DOWN",
+        "d": "RIGHT",
+        "Enter": "CONFIRM",
+        "Backspace": "BACK"
       }
     },
     preload() {
-
+      this.store.sound("lvl up sound", codSound.href)
     }
   })
 
@@ -99,14 +104,22 @@ const testGameClass = () => {
       console.log("destroying ...")
     }
   })
-
   const scene2 = new TextForce.Scene({
     name: "test scene 2",
-    create: () => {
-      console.log("creating ... and going funky")
+    create: (game) => {
+      const text = new TextForce.Game.Text("pre", "hello", "Hello and welcome")
+
+      game.objectManager.append(text)
+      const textCopy = game.objectManager.get("hello")
+
+      console.log(game)
+      game.objectManager.delete(text)
+      console.log(game.objectManager)
     },
-    render: () => {
-      console.log("rendering ... and going funky")
+    render: (game) => {
+      // const text = game.objectManager.get("hello")
+      // document.body.appendChild(text.element)
+
     },
     destroy: () => {
       console.log("destroying ... and going funky")
@@ -119,14 +132,15 @@ const testGameClass = () => {
   document.body.appendChild(switchSceneButton)
 
   switchSceneButton.addEventListener("click", () => {
-    game.sceneManager.start("test scene 2")
+    game.sceneManager.stop("test scene 2")
   })
-
 
   game.sceneManager.append(scene)
   game.sceneManager.append(scene2)
 
-  game.sceneManager.start("test scene")
+  game.sceneManager.start("test scene 2")
+
+  // game.sceneManager.start("test scene")
   // game.sceneManager.start("test scene 2")
 }
 
