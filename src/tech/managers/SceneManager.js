@@ -1,5 +1,3 @@
-import Scene from "../Scene"
-
 class SceneManager {
   constructor(game) {
     this.currentScene = null
@@ -7,25 +5,12 @@ class SceneManager {
     this.game = game
   }
 
-  _isSceneExisting(name) {
-    if (this.scenes.find(scene => scene.name === name)) {
-
-    } else {
-      throw new Error(`SceneManager error: Missing scene ${name}`)
-    }
-  }
-
-  add(scene) {
+  append(scene) {
     this.scenes.push(scene)
   }
 
-  _getScene(name) {
-    return this.scenes.find(scene => scene.name === name)
-  }
-
-  _runScene(scene) {
-    scene.create()
-    scene.render()
+  getActiveScene() {
+    return this.currentScene
   }
 
   clearMemory() {
@@ -47,43 +32,39 @@ class SceneManager {
   start(name) {
     this._isSceneExisting(name)
     const scene = this._getScene(name)
+    const activeScene = this.getActiveScene()
+
+    if (scene === activeScene) {
+      return
+    }
 
     if (this.currentScene === null) {
       this.currentScene = scene
       this._runScene(scene)
     } else {
-      this.clearMemory()
+      // this.clearMemory()
+      this.currentScene.destroy()
       this.currentScene = scene
       this._runScene(scene)
     }
   }
-  //
-  // shutdown(scene) {
-  //   const manager = this.game.objectManager
-  //   this.currentScene.destroy()
-  //   manager.reset()
-  // }
+
+  _getScene(name) {
+    return this.scenes.find(scene => scene.name === name)
+  }
+
+  _runScene(scene) {
+    scene.create()
+    scene.render()
+  }
+
+  _isSceneExisting(name) {
+    if (this.scenes.find(scene => scene.name === name)) {
+
+    } else {
+      throw new Error(`SceneManager error: Missing scene ${name}`)
+    }
+  }
 }
-
-const menu = new Scene({
-  name: "menu",
-  create: () => console.log("creating stuff"),
-  destroy: () => console.log("destroying shit"),
-  render: () => console.log("rendering ...")
-})
-
-const ingame = new Scene({
-  name: "ingame",
-  create: () => console.log("creating stuff"),
-  destroy: () => console.log("destroying shit"),
-  render: () => console.log("rendering ...")
-})
-
-const gameOver = new Scene({
-  name: "gameOver",
-  create: () => console.log("creating stuff"),
-  destroy: () => console.log("destroying shit"),
-  render: () => console.log("rendering ...")
-})
 
 export default SceneManager
