@@ -1,40 +1,72 @@
 class Scene {
   constructor(config) {
-    const {name, create, destroy, render} = config
-    this.checkMethods(config)
-    this.name = name
-    this.create = create
-    this.destroy = destroy
-    this.render = render
+    this._assertConstructor(config)
+
+    this.name = config.name
+    this.create = config.create
+    this.destroy = config.destroy
+    this.render = config.render
   }
 
-  checkMethods(config) {
-    const keys = ["name", "create", "render"]
+  _assertConstructor(config) {
+    this._isConfigDefined(config)
+    this._configHasNameProperty(config)
+    this._configHasNeededMethods(config)
+  }
 
-    for (let key of keys) {
-      if (!config.hasOwnProperty(key)) {
-        if (key === "name") {
-          throw new Error(`Scene Error: Missing property ${key}`)
-        } else {
-          throw new Error(`Scene Error: Missing function ${key}()`)
-        }
-      }
+  _isConfigDefined(config) {
+    if (!config) {
+      throw new Error("Scene::constructor(): Parameter 'config' is falsy. You must pass in a object.")
+    }
+
+    if (typeof config !== "object") {
+      throw new Error("Scene::constructor(): Parameter 'config' is not a object. It must be of type object.")
     }
   }
+
+  _configHasNameProperty(config) {
+    if (!config.name) {
+      throw new Error("Scene::constructor(): Missing property 'name' in config.")
+    }
+
+    if (typeof config.name !== "string") {
+      throw new Error("Scene::constructor(): Value of property 'name' is not a string. Must be of type <string>.")
+    }
+  }
+
+  _configHasNeededMethods(config) {
+    const missingFunctions = this._getMissingFunctions(config)
+
+    if (missingFunctions.length > 0) {
+      const stringed = missingFunctions.toString()
+      throw new Error(`Scene::contructor(): The following functions are missing in the config object: [${stringed}]`)
+    }
+
+    this._CheckIfKeysAreFunctions(config)
+  }
+
+  _getMissingFunctions(config) {
+    const functions = ["create", "render", "destroy"]
+    const missing = []
+
+    functions.forEach(name => {
+      if (!config.hasOwnProperty(name)) {
+        missing.push(name)
+      }
+    })
+
+    return missing
+  }
+
+  _CheckIfKeysAreFunctions(config) {
+    const functions = ["create", "render", "destroy"]
+
+    functions.forEach(name => {
+      if (typeof config[name] !== "function") {
+        throw new Error(`Scene::contructor(): Value of key '${name}' is not a function. The value must be of type <function>.`)
+      }
+    })
+  }
 }
-
-
-// const scene = new Scene({
-//   name: "Ich liebe Johannes",
-//   create() {
-//
-//   },
-//   render() {
-//
-//   },
-//   destroy() {
-//
-//   }
-// })
 
 export default Scene

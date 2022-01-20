@@ -1,13 +1,15 @@
-import wait from "../utility/wait.js"
+import wait from "../../utility/wait.js"
+import AbstractEffect from "../AbstractEffect.js"
 
-class Writer {
+class Writer extends AbstractEffect {
   constructor(element, speed) {
+    super("Writer")
     this.element = element
-    this.speed = speed
-    this.events = {
+    this.speed   = speed
+    this.events  = {
       done: () => {}
     }
-    this.state = {
+    this.state   = {
       isDone: false
     }
   }
@@ -19,8 +21,8 @@ class Writer {
   }
 
   start() {
-    let timer = this.speed
-    const characters = this.getArrayOfCharacters()
+    let timer                = this.speed
+    const characters         = this.getArrayOfCharacters()
     const lastCharacterIndex = characters.length - 1
 
     this.element.innerHTML = ""

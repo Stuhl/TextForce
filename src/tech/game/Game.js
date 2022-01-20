@@ -1,18 +1,15 @@
 import InputFactory from "../input/factory/InputFactory"
-import Text from "../text/Text"
-import Group from "../group/Group"
-// import Storage from "./Storage"
-// import EventManager from "./managers/EventManager"
-// import ObjectManager from "./managers/ObjectManager"
-// import SoundManager from "./managers/SoundManager"
-// import SceneManager from "./managers/SceneManager"
+import Text         from "../text/Text"
+import Group        from "../group/Group"
+import SoundStorage from "../systems/SoundStorage"
+import SceneManager from "../managers/SceneManager"
 
 const defaultConfig = {
   input: {
-    device: "gamepad",
-    keys: {
-      "A" : "CONFIRM"
-    }
+    device: "keyboard",
+  },
+  preload() {
+    console.warn("No preload() function.")
   }
 }
 
@@ -21,14 +18,16 @@ class Game {
   static Group = Group
 
   constructor(config = defaultConfig) {
-    this.input = InputFactory.create(config.input)
-
-
+    this.input        = InputFactory.create(config.input)
+    this.soundStorage = new SoundStorage()
+    this.sceneManager = new SceneManager()
+    this.preload      = config.preload
     this.init()
   }
 
   init() {
     this.input.attach()
+    this.preload(this)
   }
 }
 

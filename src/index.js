@@ -57,6 +57,8 @@ const testGame = () => {
   })
 }
 
+// testGame()
+
 const testPubSub = () => {
   const pubSub = new TextForce.PubSub()
 
@@ -73,19 +75,62 @@ const testPubSub = () => {
 const testGameClass = () => {
   const game = new TextForce.Game({
     input: {
-      device: "gamepad",
+      device: "keyboard",
       keys: {
         "A": "CONFIRM",
         "RT": "FIRE",
         "RB": "RELOAD"
-      },
-      mapping: "xbox"
+      }
+    },
+    preload() {
+
     }
   })
-  console.log(game)
+
+  const scene = new TextForce.Scene({
+    name: "test scene",
+    create: () => {
+      console.log("creating ...")
+    },
+    render: () => {
+      console.log("rendering ...")
+    },
+    destroy: () => {
+      console.log("destroying ...")
+    }
+  })
+
+  const scene2 = new TextForce.Scene({
+    name: "test scene 2",
+    create: () => {
+      console.log("creating ... and going funky")
+    },
+    render: () => {
+      console.log("rendering ... and going funky")
+    },
+    destroy: () => {
+      console.log("destroying ... and going funky")
+    }
+  })
+
+  const switchSceneButton = document.createElement("BUTTON")
+  switchSceneButton.innerHTML = "Press to switch scene to scene 2"
+
+  document.body.appendChild(switchSceneButton)
+
+  switchSceneButton.addEventListener("click", () => {
+    game.sceneManager.start("test scene 2")
+  })
+
+
+  game.sceneManager.append(scene)
+  game.sceneManager.append(scene2)
+
+  game.sceneManager.start("test scene")
+  // game.sceneManager.start("test scene 2")
 }
 
-// testGameClass()
+testGameClass()
 
 
 
@@ -96,7 +141,7 @@ const writerEffect = (ms) => {
   return text
 }
 
-const testWriterEffect = async () => {
+const testWriterEffect = () => {
   const text = writerEffect(20)
   const text2 =  writerEffect(30)
   const text3 =  writerEffect(40)
@@ -118,7 +163,6 @@ const testWriterEffect = async () => {
 }
 
 // testWriterEffect()
-//
 
 
 const testTextClass = () => {
@@ -138,14 +182,6 @@ const testTextClass = () => {
   document.body.appendChild(playerHealthValues.element)
   document.body.appendChild(playerManaValues.element)
 
-  playerStats.show()
-  playerHealth.show()
-  playerMana.show()
-  playerExp.show()
-  playerHealthValues.show()
-
-  // playerExp.hide()
-
   playerStats.setY(20)
   playerHealth.setY(50)
   playerMana.setY(70)
@@ -156,16 +192,173 @@ const testTextClass = () => {
   playerHealthValues.setColor("hsla(120, 100%, 30%, 1)")
 
   playerManaValues.setY(70)
-  playerManaValues.setX(playerMana.getX() + 78)
+  playerManaValues.setX(playerMana.getX() + 80)
   playerManaValues.setColor("hsla(220, 100%, 50%, 1)")
 
 
   playerUIGroup.translateX(100)
   playerUIGroup.translateY(100)
+  // playerUIGroup.translateX(0)
   playerUIGroup.scale(1.5)
+
+  playerStats.show()
+  playerHealth.show()
+  playerMana.show()
+  playerExp.show()
+  playerHealthValues.show()
+
+  const groupShakerX = new TextForce.Effects.Shake({
+    type: "group",
+    shakerConfig: {
+      group: playerUIGroup,
+      duration: 1000,
+      frequency: 10,
+      strength: 1,
+      direction: "x"
+    }
+  })
+
+  // groupShakerX.start()
 
   // playerHealth.setText("Health: 100/100")
   // playerMana.setText("  Mana: 60/64")
 }
 
 // testTextClass()
+//
+//
+
+
+const testCameraShake = () => {
+  const text = new TextForce.Game.Text("pre", "text", "Hello world!")
+  document.body.appendChild(text.element)
+  text.show()
+  text.setX(40)
+  text.setY(40)
+
+  console.log()
+
+  const xShake = new TextForce.Effects.Shake({
+    type: "object",
+    shakerConfig: {
+      object: text,
+      duration: 1000,
+      frequency: 50,
+      strength: 20,
+      direction: "x"
+    }
+  })
+  const yShake = new TextForce.Effects.Shake({
+    type: "object",
+    shakerConfig: {
+      object: text,
+      duration: 1000,
+      frequency: 50,
+      strength: 20,
+      direction: "y"
+    }
+  })
+
+  const runShake = () => {
+    xShake.start()
+    yShake.start()
+  }
+
+  runShake()
+
+}
+
+// testCameraShake()
+//
+//
+
+const testSound = () => {
+  const codSound = new URL("./test_assets/lvl_up_sound.mp3", import.meta.url)
+  const levelUpSound = new TextForce.Sound("lvl_up_sound", codSound.href)
+
+  console.log(levelUpSound.getState())
+
+  levelUpSound.setVolume(0.5)
+  levelUpSound.play()
+  // levelUpSound.loop()
+
+  console.log(levelUpSound.getState())
+
+  // setTimeout(() => {
+  //   levelUpSound.pause()
+  // }, 2000)
+  //
+  // setTimeout(() => {
+  //   levelUpSound.play()
+  // }, 2500)
+
+  //
+  // test.addEventListener("loadeddata", () => {
+  //   console.log(test.duration)
+  //   test.play()
+  // })
+}
+
+// testSound()
+//
+
+const testGameClassSounds = () => {
+  const codSound = new URL("./test_assets/lvl_up_sound.mp3", import.meta.url)
+  const codSoundObject = new TextForce.Sound("lvl_up_sound", codSound.href)
+
+  const game = new TextForce.Game({
+    device: "keyboard",
+    preload: (game) => {
+      game.soundStorage.append(codSoundObject)
+
+      const lvlUpSound = game.soundStorage.get("lvl_up_sound")
+
+      lvlUpSound.setVolume(0.1)
+      lvlUpSound.play()
+    }
+  })
+}
+
+// testGameClassSounds()
+//
+//
+
+
+const testPreload = () => {
+  const game = new TextForce.Game({
+    input: {
+      device: "keyboard",
+      keys: {
+        "w": "UP",
+        "a": "LEFT",
+        "s": "DOWN",
+        "d": "RIGHT",
+        "Enter": "CONFIRM",
+        "Backspace": "BACK",
+      }
+    },
+    preload(game) {
+      console.log(game)
+      console.log("preloading ...")
+    }
+  })
+}
+
+const testScene = () => {
+  const scene = new TextForce.Scene({
+    name: "test scene",
+    create: () => {
+      console.log("creating ...")
+    },
+    render: () => {
+      console.log("rendering ...")
+    },
+    destroy: () => {
+      console.log("destroying ...")
+    }
+  })
+
+  console.log(scene)
+}
+
+// testScene()

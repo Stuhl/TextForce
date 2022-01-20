@@ -1,41 +1,54 @@
 class Sound {
-  constructor(path, name) {
-    this.name = name
-    this._root = new Audio(path + name)
-    this.duration = this._root.duration
-    this.isPlaying = false
-    this.isPaused = true
-    this.isLooping = false
+  constructor(name, path) {
+    this.name  = name
+    this.audio = new Audio(path)
   }
 
   play() {
-     this._root.play()
-     this.isPaused = false
+     this.audio.play().then(_ => {})
   }
 
   stop() {
-    this._root.pause()
-    this._root.currentTime = 0
-    this.isPlaying = false
-    this.isPaused = true
+    this.audio.pause()
   }
 
   pause() {
-    this._root.pause()
-    this.isPaused = true
-    this.isPlaying = false
+    this.audio.pause()
   }
 
-  setVolume(volume) {
-    if (volume > 1 || volume < 0) {
-      throw new Error("The volumne needs to be in range 0-1. You passed in: " + volume)
+  setVolume(value) {
+    this._assertVolume(value)
+    this.audio.volume = value
+  }
+
+  loop() {
+    this.audio.loop = true
+  }
+
+  noLoop() {
+    this.audio.loop = false
+  }
+
+  getState() {
+    return {
+      playing: !this.audio.paused,
+       paused: this.audio.paused,
+      looping: this.audio.loop
     }
-    this._root.volume = volume
   }
 
-  setLoop(bool) {
-    this._root.loop = bool
-    this.isLooping = bool
+  _assertVolume(value) {
+    if (!value && value !== 0) {
+      throw new Error("Sound::setVolume(): Parameter 'value' can't be falsy (except 0).")
+    }
+
+    if (typeof value !== "number") {
+      throw new TypeError("Sound::setVolume(): Parameter 'value' must be of time number.")
+    }
+
+    if (value > 1 || value < 0) {
+      throw new RangeError("Sound::setVolume(): Parameter 'value' needs to be in range 0-1")
+    }
   }
 }
 
