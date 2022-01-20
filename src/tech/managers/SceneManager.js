@@ -1,6 +1,6 @@
 class SceneManager {
   constructor(game) {
-    this.currentScene = null
+    this.activeScene = null
     this.scenes = []
     this.game = game
   }
@@ -10,7 +10,7 @@ class SceneManager {
   }
 
   getActiveScene() {
-    return this.currentScene
+    return this.activeScene
   }
 
   clearMemory() {
@@ -30,7 +30,7 @@ class SceneManager {
   }
 
   start(name) {
-    this._isSceneExisting(name)
+    this._isSceneExisting("start", name)
     const scene = this._getScene(name)
     const activeScene = this.getActiveScene()
 
@@ -38,15 +38,23 @@ class SceneManager {
       return
     }
 
-    if (this.currentScene === null) {
-      this.currentScene = scene
+    if (this.activeScene === null) {
+      this.activeScene = scene
       this._runScene(scene)
     } else {
       // this.clearMemory()
-      this.currentScene.destroy()
-      this.currentScene = scene
+      this.activeScene.destroy()
+      this.activeScene = scene
       this._runScene(scene)
     }
+  }
+
+  stop() {
+    this._isASceneActive()
+    const activeScene = this.getActiveScene()
+
+    activeScene.destroy()
+    this.activeScene = null
   }
 
   _getScene(name) {
@@ -54,15 +62,23 @@ class SceneManager {
   }
 
   _runScene(scene) {
-    scene.create()
-    scene.render()
+    // scene.create.bind(this)
+    // scene.render.bind(this)
+
+    scene.create(this.game)
+    scene.render(this.game)
   }
 
-  _isSceneExisting(name) {
-    if (this.scenes.find(scene => scene.name === name)) {
+  _isSceneExisting(caller, name) {
+    if (!(this.scenes.find(scene => scene.name === name))) {
+      throw new Error(`SceneManager::${caller}(): Scene '${name}' does not exist.`)
+    }
+  }
 
-    } else {
-      throw new Error(`SceneManager error: Missing scene ${name}`)
+  _isASceneActive() {
+    const activeScene = this.getActiveScene()
+    if (!activeScene) {
+      throw new Error("SceneManager::stop(): No scene is currently active and running.")
     }
   }
 }
