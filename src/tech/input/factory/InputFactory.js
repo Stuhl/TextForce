@@ -1,41 +1,28 @@
-import Gamepad from "../low-level/gamepad/Gamepad.js"
-import Keyboard from "../low-level/keyboard/Keyboard.js"
-import Input from "../high-level/Input.js"
+import Gamepad from "../low-level/gamepad/Gamepad"
+import Keyboard from "../low-level/keyboard/Keyboard"
+import Input from "../high-level/Input"
 
-import checkConfigWithInterface from "./interface.js"
-
-const defaultConfig = {
-  device: "keyboard"
-}
+import interfaceInputFactory from "./InterfaceInputFactory"
 
 class InputFactory {
-  static create(config = defaultConfig) {
-    if (config !== defaultConfig) {
-      checkConfigWithInterface(config)
-
-      if (config.device === "keyboard") {
-        return new Input(new Keyboard({
-          keys: config.keys
-        }))
-      }
-
-      if (config.device === "gamepad") {
-        return new Input(new Gamepad({
-          keys: config.keys,
-          mapping: config.mapping
-        }))
-      }
-    }
+  static create(config) {
+    interfaceInputFactory(config)
 
     if (config.device === "keyboard") {
-      return new Input(new Keyboard())
+      return new Input(new Keyboard({
+        keys: config.keys,
+        eventEmitter: config.eventEmitter
+      }))
     }
 
     if (config.device === "gamepad") {
-      return new Input(new Gamepad())
+      return new Input(new Gamepad({
+        keys: config.keys,
+        mapping: config.mapping,
+        eventEmitter: config.eventEmitter
+      }))
     }
 
-    throw new Error("InputFactory::create(): Device not found.")
   }
 }
 

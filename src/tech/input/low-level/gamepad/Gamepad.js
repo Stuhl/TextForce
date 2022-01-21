@@ -1,68 +1,47 @@
-import AbstractInput from "../../high-level/AbstractInput.js"
-import configInterface from "./configInterface.js"
+import AbstractInput from "../../high-level/AbstractInput"
+import interfaceGamepad from "./interfaceGamepad"
 
 import xbox from "./variants/xbox"
 import playstation from "./variants/playstation"
 
-const defaultConfig = {
-  keys: {
-    "A": "CONFIRM",
-    "B": "BACK",
-    "CROSS-UP": "UP",
-    "CROSS-LEFT": "LEFT",
-    "CROSS-DOWN": "DOWN",
-    "CROSS-RIGHT": "RIGHT"
-  },
-  mapping: "xbox"
-}
 
-configInterface(defaultConfig)
+// Gamepad.remove works outside events
+// Bugs inside of events (requestAnimationFrame is still going)
 
 class Gamepad extends AbstractInput {
-  constructor(config = defaultConfig) {
+  constructor(config) {
     super("Gamepad")
-    configInterface(config)
+    interfaceGamepad(config)
+
     this.keys = config.keys
     this.listening = false
     this.gamepad = null
     this.mapping = this._getMap(config.mapping)
+    this.eventEmitter = config.eventEmitter
+
+    this._updateHandler = this._update.bind(this)
+    this._gamepadEventHandler = this._gamepadEventHandler.bind(this)
+    this._gamepadRemoveEventHandler = this._gamepadRemoveEventHandler.bind(this)
   }
 
-  update() {
-    const self = this
-    self.render(this._getPressedButton())
-    requestAnimationFrame(self.update.bind(self))
-  }
-
-  emit() {
-    this.events
-  }
-
-  render(pressed) {
-    if (pressed) {
-      console.log(`Button pressed: ${pressed}`)
-    }
+  emit(pressed) {
+    this.eventEmitter.publish("input", pressed)
   }
 
   attach() {
-    window.addEventListener("gamepadconnected", (event) => {
-      this.gamepad = event.gamepad
-      requestAnimationFrame(this.update.bind(this))
-    })
+    window.addEventListener("gamepadconnected", this._gamepadEventHandler)
+    window.addEventListener("gamepaddisconnected", this._gamepadRemoveEventHandler)
 
-    window.addEventListener("gamepaddisconnected", (event) => {
-      cancelAnimationFrame(this.update.bind(this))
-    })
-
-    this.setListening(true)
+    this.listening = true
   }
 
   remove() {
-    this.setListening(false)
-  }
+    cancelAnimationFrame(this.animationFrameID)
+    window.removeEventListener("gamepadconnected", this._gamepadEventHandler)
+    window.removeEventListener("gamepaddisconnected", this._gamepadRemoveEventHandler)
+    console.log(this.animationFrameID)
 
-  setListening(state) {
-    this.listening = state
+    this.listening = false
   }
 
   getListening() {
@@ -70,12 +49,7 @@ class Gamepad extends AbstractInput {
   }
 
   setKey(key, name) {
-    if (this._hasKey(key)) {
-      throw new Error(`Gamepad::setKey(): Adding key failed. key '${key}' already exists.`)
-    }
-
     this.keys[key] = name
-    return true
   }
 
   getKeys() {
@@ -87,15 +61,29 @@ class Gamepad extends AbstractInput {
       throw new Error(`Gamepad::removeKey(): Removing key failed. '${key}' doesn't exist.`)
     }
 
-    this.keys[key] === undefined
-    return true
+    delete this.keys[key]
+  }
+
+  _update() {
+    const self = this
+    self.emit(this._getPressedButton())
+    this.animationFrameID = requestAnimationFrame(self._updateHandler)
+  }
+
+  _gamepadEventHandler(event) {
+    this.gamepad = event.gamepad
+    this.animationFrameID = requestAnimationFrame(this._updateHandler)
+  }
+
+  _gamepadRemoveEventHandler(event) {
+    cancelAnimationFrame(this.animationFrameID)
   }
 
   _getPressedButton() {
     const gamepads = navigator.getGamepads()
     const currentGamepad = gamepads[this.gamepad.index]
 
-    const activeButtonIndex = () => {
+    const activeButton = () => {
       let targetIndex = null
 
       currentGamepad.buttons.forEach((button, index) => {
@@ -107,7 +95,7 @@ class Gamepad extends AbstractInput {
       return targetIndex
     }
 
-    const active = activeButtonIndex()
+    const active = activeButton()
     const mappedButton = this.mapping[active]
     const keyedButton = this.keys[mappedButton]
 

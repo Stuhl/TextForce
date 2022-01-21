@@ -34,7 +34,7 @@ class PubSub extends AbstractPubSub {
     }
   }
 
-  clear() {
+  reset() {
     this.events = {}
   }
 
