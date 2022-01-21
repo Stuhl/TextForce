@@ -6,20 +6,11 @@ import SoundStorage  from "../systems/SoundStorage"
 import SceneManager  from "../managers/SceneManager"
 import ObjectManager from "../managers/ObjectManager"
 
-const defaultConfig = {
-  input: {
-    device: "keyboard",
-  },
-  preload() {
-    console.warn("No preload() function.")
-  }
-}
-
 class Game {
   static Text  = Text
   static Group = Group
 
-  constructor(config = defaultConfig) {
+  constructor(config) {
     this.input         = InputFactory.create(config.input)
     this.soundStorage  = new SoundStorage()
     this.sceneManager  = new SceneManager(this)

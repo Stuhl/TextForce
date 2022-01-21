@@ -144,7 +144,7 @@ const testGameClass = () => {
   // game.sceneManager.start("test scene 2")
 }
 
-testGameClass()
+// testGameClass()
 
 
 
@@ -358,6 +358,8 @@ const testPreload = () => {
   })
 }
 
+// testPreload()
+
 const testScene = () => {
   const scene = new TextForce.Scene({
     name: "test scene",
@@ -376,3 +378,107 @@ const testScene = () => {
 }
 
 // testScene()
+
+
+const testKeyboard = () => {
+  const pubsub = new TextForce.PubSub()
+  const keyboard = new TextForce.Keyboard({
+    keys: {},
+    eventEmitter: pubsub
+  })
+
+  keyboard.attach()
+  keyboard.setKey("w", "up")
+  keyboard.setKey("a", "left")
+  keyboard.setKey("s", "down")
+  keyboard.setKey("d", "right")
+
+  console.log(keyboard.getKeys())
+
+  let pressedKeys = 0
+  keyboard.eventEmitter.subscribe("input", (pressedKey) => {
+    if (pressedKeys >= 5) {
+      keyboard.remove()
+      return
+    }
+
+    console.log(pressedKey)
+    pressedKeys++
+  })
+}
+
+// testKeyboard()
+
+
+const testGamepad = () => {
+  const pubsub = new TextForce.PubSub()
+  const gamepad = new TextForce.Gamepad({
+    keys: {},
+    mapping: "xbox",
+    eventEmitter: pubsub
+  })
+
+  gamepad.attach()
+  gamepad.setKey("A", "CONFIRM")
+  gamepad.setKey("B", "CANCEL")
+  gamepad.setKey("CROSS-UP", "UP")
+  gamepad.setKey("CROSS-LEFT", "LEFT")
+  gamepad.setKey("CROSS-DOWN", "DOWN")
+  gamepad.setKey("CROSS-RIGHT", "RIGHT")
+
+  // gamepad.remove()
+
+  gamepad.removeKey("B")
+
+  let counter = 0
+
+  pubsub.subscribe("input", (pressed) => {
+    console.log(pressed)
+
+    if (counter >= 200) {
+      gamepad.remove()
+      return
+    }
+
+    counter++
+  })
+
+  const pubsub2 = new TextForce.PubSub()
+  const game = new TextForce.Game({
+    input: {
+      device: "keyboard",
+      keys: {
+        "w": "UP",
+        "a": "LEFT",
+        "s": "DOWN",
+        "d": "RIGHT",
+        "Enter": "CONFIRM",
+        "Backspace": "BACK",
+      },
+      eventEmitter: pubsub2
+    },
+    preload(game) {
+      console.log(game)
+      console.log("preloading ...")
+    }
+  })
+
+  pubsub2.subscribe("input", (pressed) => {
+    console.log(pressed)
+  })
+}
+
+// testGamepad()
+
+
+const testMathModule = () => {
+  const Gamemath = TextForce.Math
+
+  // const randomInt = Gamemath.randomInt(-100, 0)
+  // const randomChoice = Gamemath.randomChoice(["ATTACK", "DEFEND", "HEAL"])
+  // const scatter = Gamemath.scatter(-10, 2)
+  // const forwardScatter = Gamemath.forwardScatter(10, 1)
+  // const percentBool = Gamemath.percentBool(-0.1)
+}
+
+// testMathModule()

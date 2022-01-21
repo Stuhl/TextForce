@@ -1,5 +1,8 @@
-class Input {
+import AbstractInput from "./AbstractInput"
+
+class Input extends AbstractInput {
   constructor(inputDevice) {
+    super("Input")
     this.inputDevice = inputDevice
   }
 
