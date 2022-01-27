@@ -43,7 +43,9 @@ class SceneManager {
       this._runScene(scene)
     } else {
       // this.clearMemory()
-      this.activeScene.destroy()
+      console.log(this.activeScene.destroy)
+      this.activeScene.destroy(this.game)
+      console.log(1)
       this.activeScene = scene
       this._runScene(scene)
     }

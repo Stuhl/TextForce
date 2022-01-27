@@ -5,21 +5,21 @@ import Group         from "../group/Group"
 import SoundStorage  from "../systems/SoundStorage"
 import SceneManager  from "../managers/SceneManager"
 import ObjectManager from "../managers/ObjectManager"
+import PubSub        from "../pubsub/Pubsub"
 
 class Game {
-  static Text  = Text
-  static Group = Group
-
   constructor(config) {
-    this.input         = InputFactory.create(config.input)
-    this.soundStorage  = new SoundStorage()
-    this.sceneManager  = new SceneManager(this)
-    this.objectManager = new ObjectManager(this)
-    this.preload       = config.preload
+    this.gameEventEmitter = new PubSub()
 
+    config.input.eventEmitter = this.gameEventEmitter
+
+    this.input            = InputFactory.create(config.input)
+    this.soundStorage     = new SoundStorage()
+    this.sceneManager     = new SceneManager(this)
+    this.objectManager    = new ObjectManager(this)
+    this.preload          = config.preload
 
     const self = this
-
 
     this.store = {
       sound(name, path) {
@@ -29,17 +29,41 @@ class Game {
     }
 
     this.add = {
-      text(element, name, innerHTML) {
-        const textObject = new Text(element, name, innerHTML)
+      text(name, innerHTML) {
+        const textObject = new Text(name, innerHTML)
         self.objectManager.append(textObject)
+        document.body.appendChild(textObject.element)
+      },
+      textObject(textObject) {
+        self.objectManager.append(textObject)
+        document.body.appendChild(textObject.element)
       }
     }
-    this.init()
+
+    this.remove = {
+      textObject(textObject) {
+        self.objectManager.delete(textObject)
+        document.body.removeChild(textObject.element)
+      }
+    }
+
+    this.init(config)
   }
 
-  init() {
+  init(config) {
     this.input.attach()
-    this.preload(this)
+    this._loadScenes(config.scenes)
+    this._start(config.activeScene)
+  }
+
+  _loadScenes(scenes) {
+    for (let scene of scenes) {
+      this.sceneManager.append(scene)
+    }
+  }
+
+  _start(activeScene) {
+    this.sceneManager.start(activeScene)
   }
 }
 

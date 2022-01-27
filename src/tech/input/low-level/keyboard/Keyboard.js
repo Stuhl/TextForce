@@ -43,6 +43,15 @@ class Keyboard extends AbstractInput {
     delete this.keys[key]
   }
 
+  on(event, callback) {
+    if (event === "input") {
+      this.eventEmitter.subscribe(event, callback)
+      return
+    }
+
+    throw new Error(`Keyboard::on(): Event '${event}' is not a valid event. Valid events are: [input].`)
+  }
+
   _handleKeyDown(event) {
     const pressed = this.keys[event.key]
     if (pressed !== undefined) {

@@ -1,10 +1,7 @@
 class Text {
-  constructor(element, name, innerHTML) {
-    this.element = document.createElement(element)
+  constructor(name, innerHTML) {
+    this.element = this._create(innerHTML)
     this.name = name
-    this.element.innerHTML += innerHTML
-    this.element.style.position = "fixed"
-    this.element.style.margin = "0"
     this.anchor = "standard"
   }
 
@@ -16,7 +13,6 @@ class Text {
     }
 
     if (this.anchor === "standard") {
-
       return this.getCoord().x
     }
   }
@@ -105,8 +101,20 @@ class Text {
     }
   }
 
-  setID(name) {
-    this.element.id = name
+  _create(innerHTML) {
+    const text = document.createElement("PRE")
+    this._setInitialStyle(text, innerHTML)
+
+    return text
+  }
+
+  _setInitialStyle(text, innerHTML) {
+    text.innerHTML       += innerHTML
+    text.style.position   = "fixed"
+    text.style.margin     = "0"
+    text.style.cursor     = "default"
+    text.style.userSelect = "none"
+    text.style.display    = "none"
   }
 }
 
