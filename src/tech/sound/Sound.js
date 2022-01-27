@@ -1,5 +1,6 @@
 class Sound {
   constructor(name, path) {
+    this._assertConstructor(name, path)
     this.name  = name
     this.audio = new Audio(path)
   }
@@ -10,6 +11,7 @@ class Sound {
 
   stop() {
     this.audio.pause()
+    this.audio.currentTime = 0
   }
 
   pause() {
@@ -29,21 +31,30 @@ class Sound {
     this.audio.loop = false
   }
 
-  getState() {
-    return {
-      playing: !this.audio.paused,
-       paused: this.audio.paused,
-      looping: this.audio.loop
+  _assertConstructor(name, path) {
+    if (!name) {
+      throw new Error("Sound::constructor(): Parameter 'name' cannot be falsy.")
+    }
+
+    if (typeof name !== "string") {
+      throw new TypeError("Sound::constructor(): Parameter 'name' is not a string. 'name' must be of type <string>.")
+    }
+
+    if (!path) {
+      throw new Error("Sound::constructor(): Parameter 'path' cannot be falsy.")
+    }
+
+    if (typeof name !== "string") {
+      throw new TypeError("Sound::constructor(): Parameter 'path' is not a string. 'path' must be of type <string>.")
     }
   }
-
   _assertVolume(value) {
     if (!value && value !== 0) {
       throw new Error("Sound::setVolume(): Parameter 'value' can't be falsy (except 0).")
     }
 
     if (typeof value !== "number") {
-      throw new TypeError("Sound::setVolume(): Parameter 'value' must be of time number.")
+      throw new TypeError("Sound::setVolume(): Parameter 'value' must be of type number.")
     }
 
     if (value > 1 || value < 0) {

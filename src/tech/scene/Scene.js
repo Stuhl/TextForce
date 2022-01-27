@@ -2,10 +2,10 @@ class Scene {
   constructor(config) {
     this._assertConstructor(config)
 
-    this.name = config.name
-    this.create = config.create
+    this.name    = config.name
+    this.create  = config.create
     this.destroy = config.destroy
-    this.render = config.render
+    this.render  = config.render
   }
 
   _assertConstructor(config) {

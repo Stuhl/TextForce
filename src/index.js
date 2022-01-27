@@ -478,7 +478,64 @@ const testMathModule = () => {
   // const randomChoice = Gamemath.randomChoice(["ATTACK", "DEFEND", "HEAL"])
   // const scatter = Gamemath.scatter(-10, 2)
   // const forwardScatter = Gamemath.forwardScatter(10, 1)
-  // const percentBool = Gamemath.percentBool(-0.1)
+  // const percentBool = Gamemath.percentBool(0.5)
+
+  // console.log(percentBool)
 }
 
 // testMathModule()
+
+const testCanvas = () => {
+  const gameCanvas = new TextForce.Canvas({
+    width: 500,
+    height: 500,
+    background: "hsla(0, 0%, 5%, 1)"
+  })
+
+  const text = new TextForce.Text("test", "hello")
+  const text2 = new TextForce.Text("test2", "asdfasdf")
+  const text3 = new TextForce.Text("test3", "asdfadsfasdfdsafdsf")
+
+  text.setColor("hsla(0, 0%, 95%, 1)")
+  text2.setColor("hsla(0, 0%, 95%, 1)")
+  text3.setColor("hsla(0, 0%, 95%, 1)")
+
+  text.setX(100)
+  text.setY(100)
+  text2.setX(200)
+  text2.setY(200)
+  text3.setX(300)
+  text3.setY(300)
+
+  document.body.appendChild(gameCanvas.element)
+  document.body.appendChild(text.element)
+  document.body.appendChild(text2.element)
+  document.body.appendChild(text3.element)
+}
+
+
+import menu   from "./testScene"
+import ingame from "./ingameScene"
+
+
+const makeTestGame = () => {
+  const game = new TextForce.Game({
+    input: {
+      device: "keyboard",
+      keys: {
+        "w": "UP",
+        "a": "LEFT",
+        "s": "DOWN",
+        "d": "RIGHT",
+        "Enter": "ENTER",
+        "Backspace": "BACK"
+      }
+    },
+    scenes: [menu, ingame],
+    activeScene: "scene1"
+  })
+}
+
+makeTestGame()
+
+// testCanvas()

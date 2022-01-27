@@ -33,6 +33,10 @@ class Input extends AbstractInput {
   removeKey(key) {
     this.inputDevice.removeKey(key)
   }
+
+  on(event, callback) {
+    this.inputDevice.on(event, callback)
+  }
 }
 
 export default Input

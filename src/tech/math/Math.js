@@ -32,7 +32,7 @@ class GameMath {
 
   static percentBool(percent) {
     _assertPercentBool(percent)
-    return Math.random() > percent
+    return Math.random() < percent
   }
 }
 

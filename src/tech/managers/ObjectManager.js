@@ -33,7 +33,6 @@ class ObjectManager {
       throw new Error(`ObjectManager::append(): Parameter 'object' is not a object. Must be of type <object>.`)
     }
   }
-
   _assertGet(name) {
     if (!name) {
       throw new Error(`ObjectManager::get(): Parameter 'name' cannot be falsy. Must be a string.`)
@@ -47,7 +46,6 @@ class ObjectManager {
       throw new Error(`ObjectManager::get(): Object '${name}' cannot be found.`)
     }
   }
-
   _assertDelete(targetObject) {
     if (!targetObject) {
       throw new Error(`ObjectManager::delete(): Parameter 'object' cannot be falsy. Must be a object.`)
