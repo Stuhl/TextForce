@@ -6,7 +6,6 @@ const settings     = new TextForce.Text("settings", "settings")
 const arrow        = new TextForce.Text("arrow", ">")
 
 const eventEmitter = new TextForce.PubSub()
-
 const keyboard     = new TextForce.Keyboard({
   keys: {
     "w"    : "UP",
@@ -22,8 +21,60 @@ const updateArrow = (arrowState) => {
   arrow.setY((arrowState * 20) + 100)
 }
 
+const updateArrowHandler = (pressed) => {
+  console.log("press")
+  if (pressed === "UP") {
+    arrowState--
+  }
+
+  if (pressed === "DOWN") {
+    arrowState++
+  }
+
+  if (arrowState > 2) {
+    arrowState = 0
+  }
+
+  if (arrowState < 0) {
+    arrowState = 2
+  }
+
+  if (pressed === "ENTER") {
+    console.log(1)
+    scene.sceneManager.start("ingame")
+  }
+
+  updateArrow(arrowState)
+}
+
 const create = (scene) => {
   let arrowState = 0
+
+  const updateArrowHandler = (pressed) => {
+    console.log("press")
+    if (pressed === "UP") {
+      arrowState--
+    }
+
+    if (pressed === "DOWN") {
+      arrowState++
+    }
+
+    if (arrowState > 2) {
+      arrowState = 0
+    }
+
+    if (arrowState < 0) {
+      arrowState = 2
+    }
+
+    if (pressed === "ENTER") {
+      console.log(1)
+      scene.sceneManager.start("ingame")
+    }
+
+    updateArrow(arrowState)
+  }
 
   scene.add.textObject(start)
   scene.add.textObject(load)
@@ -43,29 +94,7 @@ const create = (scene) => {
   arrow.setY(100)
   arrow.scale(1.5)
 
-  keyboard.on("input", (pressed) => {
-    if (pressed === "UP") {
-      arrowState--
-    }
-
-    if (pressed === "DOWN") {
-      arrowState++
-    }
-
-    if (arrowState > 2) {
-      arrowState = 0
-    }
-
-    if (arrowState < 0) {
-      arrowState = 2
-    }
-
-    if (pressed === "ENTER") {
-      scene.sceneManager.start("ingame")
-    }
-
-    updateArrow(arrowState)
-  })
+  keyboard.on("input", updateArrowHandler)
 }
 
 const render = (scene) => {
@@ -80,6 +109,7 @@ const destroy = (scene) => {
   scene.remove.textObject(load)
   scene.remove.textObject(settings)
   scene.remove.textObject(arrow)
+  keyboard.off("input", updateArrowHandler)
 }
 
 const scene = new TextForce.Scene({

@@ -2,7 +2,6 @@ class Canvas {
   constructor(config) {
     this.width   = config.width
     this.height  = config.height
-
     this.element = this._create()
     this.setBackgroundColor(config.background)
   }

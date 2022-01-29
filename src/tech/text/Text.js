@@ -1,13 +1,13 @@
 class Text {
   constructor(name, innerHTML) {
     this.element = this._create(innerHTML)
-    this.name = name
-    this.anchor = "standard"
+    this.name    = name
+    this.anchor  = "standard"
   }
 
   getX() {
     if (this.anchor === "center") {
-      const coord = this.getCoord()
+      const coord  = this.getCoord()
       const offset = coord.width / 2
       return (value - offset)
     }
@@ -19,7 +19,7 @@ class Text {
 
   getY() {
     if (this.anchor === "center") {
-      const coord = this.getCoord()
+      const coord  = this.getCoord()
       const offset = coord.height / 2
       return (value - offset)
     }
@@ -31,7 +31,7 @@ class Text {
 
   setX(value) {
     if (this.anchor === "center") {
-      const coord = this.getCoord()
+      const coord  = this.getCoord()
       const offset = coord.width / 2
       this.element.style.left = (value - offset) + "px"
     }
@@ -43,7 +43,7 @@ class Text {
 
   setY(value) {
     if (this.anchor === "center") {
-      const coord = this.getCoord()
+      const coord  = this.getCoord()
       const offset = coord.height / 2
       this.element.style.top = (value - offset) + "px"
     }
