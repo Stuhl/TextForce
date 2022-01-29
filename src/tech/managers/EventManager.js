@@ -1,9 +1,6 @@
-import PubSub from "../PubSub"
-
 class EventManager {
   constructor() {
     this.events = {}
-    this.errorHandlingTitle = "EventManager Error:"
   }
 
   _hasProperty(name) {

@@ -1,6 +1,6 @@
-import Gamepad from "../low-level/gamepad/Gamepad"
+import Gamepad  from "../low-level/gamepad/Gamepad"
 import Keyboard from "../low-level/keyboard/Keyboard"
-import Input from "../high-level/Input"
+import Input    from "../high-level/Input"
 
 import interfaceInputFactory from "./InterfaceInputFactory"
 

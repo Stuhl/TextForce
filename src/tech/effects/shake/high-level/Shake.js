@@ -1,15 +1,13 @@
 import AbstractEffect from "../../AbstractEffect.js"
 
-import GroupShaker from "../low-level/GroupShaker.js"
-import ObjectShaker from "../low-level/ObjectShaker.js"
+import GroupShaker    from "../low-level/GroupShaker.js"
+import ObjectShaker   from "../low-level/ObjectShaker.js"
 
 class Shake {
   constructor(config) {
-    this.type = config.type
+    this.type         = config.type
     this.shakerConfig = config.shakerConfig
-    this.shaker = this._getShaker()
-
-    // console.log(this.shaker)
+    this.shaker       = this._getShaker()
   }
 
   start() {

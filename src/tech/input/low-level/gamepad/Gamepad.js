@@ -1,7 +1,7 @@
-import AbstractInput from "../../high-level/AbstractInput"
+import AbstractInput    from "../../high-level/AbstractInput"
 import interfaceGamepad from "./interfaceGamepad"
 
-import xbox from "./variants/xbox"
+import xbox        from "./variants/xbox"
 import playstation from "./variants/playstation"
 
 
@@ -13,14 +13,14 @@ class Gamepad extends AbstractInput {
     super("Gamepad")
     interfaceGamepad(config)
 
-    this.keys = config.keys
-    this.listening = false
-    this.gamepad = null
-    this.mapping = this._getMap(config.mapping)
+    this.keys         = config.keys
+    this.listening    = false
+    this.gamepad      = null
+    this.mapping      = this._getMap(config.mapping)
     this.eventEmitter = config.eventEmitter
 
-    this._updateHandler = this._update.bind(this)
-    this._gamepadEventHandler = this._gamepadEventHandler.bind(this)
+    this._updateHandler             = this._update.bind(this)
+    this._gamepadEventHandler       = this._gamepadEventHandler.bind(this)
     this._gamepadRemoveEventHandler = this._gamepadRemoveEventHandler.bind(this)
   }
 
@@ -71,7 +71,7 @@ class Gamepad extends AbstractInput {
   }
 
   _gamepadEventHandler(event) {
-    this.gamepad = event.gamepad
+    this.gamepad          = event.gamepad
     this.animationFrameID = requestAnimationFrame(this._updateHandler)
   }
 
@@ -80,7 +80,7 @@ class Gamepad extends AbstractInput {
   }
 
   _getPressedButton() {
-    const gamepads = navigator.getGamepads()
+    const gamepads       = navigator.getGamepads()
     const currentGamepad = gamepads[this.gamepad.index]
 
     const activeButton = () => {
@@ -95,9 +95,9 @@ class Gamepad extends AbstractInput {
       return targetIndex
     }
 
-    const active = activeButton()
+    const active       = activeButton()
     const mappedButton = this.mapping[active]
-    const keyedButton = this.keys[mappedButton]
+    const keyedButton  = this.keys[mappedButton]
 
     return keyedButton
   }

@@ -1,7 +1,7 @@
 class ObjectManager {
   constructor(game) {
     this.objects = []
-    this.game = game
+    this.game    = game
   }
 
   append(object) {

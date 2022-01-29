@@ -1,7 +1,7 @@
 class SoundStorage {
   constructor() {
     this.sounds = []
-    this.mute = false
+    this.mute   = false
     this.volume = 1
   }
 

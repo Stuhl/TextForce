@@ -26,7 +26,7 @@ class PubSub extends AbstractPubSub {
     this._assertUnsubscribe(name)
 
     const targetArray = this.events[name]
-    const index = targetArray.indexOf(callback)
+    const index       = targetArray.indexOf(callback)
     targetArray.splice(index, 1)
 
     if (targetArray.length === 0) {

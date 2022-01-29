@@ -2,7 +2,7 @@ class SceneManager {
   constructor(game) {
     this.activeScene = null
     this.scenes = []
-    this.game = game
+    this.game   = game
   }
 
   append(scene) {
@@ -31,7 +31,7 @@ class SceneManager {
 
   start(name) {
     this._isSceneExisting("start", name)
-    const scene = this._getScene(name)
+    const scene       = this._getScene(name)
     const activeScene = this.getActiveScene()
 
     if (scene === activeScene) {
@@ -43,9 +43,8 @@ class SceneManager {
       this._runScene(scene)
     } else {
       // this.clearMemory()
-      console.log(this.activeScene.destroy)
       this.activeScene.destroy(this.game)
-      console.log(1)
+      this._clearEvents()
       this.activeScene = scene
       this._runScene(scene)
     }
@@ -59,14 +58,18 @@ class SceneManager {
     this.activeScene = null
   }
 
+  _clearEvents() {
+    console.log(1)
+    document.body.innerHTML = document.body.innerHTML
+    // document.body = document.body.cloneNode(true)
+    // document.body.appendChild(document.body)
+  }
+
   _getScene(name) {
     return this.scenes.find(scene => scene.name === name)
   }
 
   _runScene(scene) {
-    // scene.create.bind(this)
-    // scene.render.bind(this)
-
     scene.create(this.game)
     scene.render(this.game)
   }

@@ -1,4 +1,4 @@
-import AbstractInput from "../../high-level/AbstractInput"
+import AbstractInput     from "../../high-level/AbstractInput"
 import interfaceKeyboard from "./interfaceKeyboard"
 
 class Keyboard extends AbstractInput {
@@ -6,9 +6,9 @@ class Keyboard extends AbstractInput {
     super("Keyboard")
     interfaceKeyboard(config)
 
-    this.keys = config.keys
-    this.listening = config.listening
-    this.eventEmitter = config.eventEmitter
+    this.keys            = config.keys
+    this.listening       = config.listening
+    this.eventEmitter    = config.eventEmitter
 
     this._keyDownHandler = this._handleKeyDown.bind(this)
   }
@@ -46,6 +46,15 @@ class Keyboard extends AbstractInput {
   on(event, callback) {
     if (event === "input") {
       this.eventEmitter.subscribe(event, callback)
+      return
+    }
+
+    throw new Error(`Keyboard::on(): Event '${event}' is not a valid event. Valid events are: [input].`)
+  }
+
+  off(event, callback) {
+    if (event === "input") {
+      this.eventEmitter.unsubscribe(event, callback)
       return
     }
 
