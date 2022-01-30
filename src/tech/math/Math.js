@@ -30,9 +30,9 @@ class GameMath {
     return Math.random() > 0.5
   }
 
-  static percentBool(percent) {
-    _assertPercentBool(percent)
-    return Math.random() < percent
+  static percentBool(probabality) {
+    _assertPercentBool(probabality)
+    return Math.random() < probabality
   }
 }
 
@@ -133,17 +133,17 @@ const _assertRandomFloat = (min, max) => {
     throw new RangeError("TextForce.Math::randomFloat(): Parameter 'max' must be bigger than 'min' or the same.")
   }
 }
-const _assertPercentBool = (percent) => {
-  if (!percent && percent !== 0) {
-    throw new Error("TextForce.Math::percentBool(): Parameter 'min' cannot be falsy.")
+const _assertPercentBool = (probabality) => {
+  if (!probabality && probabality !== 0) {
+    throw new Error("TextForce.Math::percentBool(): Parameter 'probabality' cannot be falsy.")
   }
 
-  if (typeof percent !== "number") {
-    throw new Error("TextForce.Math::percentBool(): Parameter 'min' is not a number. 'min' has to be of type <number>.")
+  if (typeof probabality !== "number") {
+    throw new Error("TextForce.Math::percentBool(): Parameter 'probabality' is not a number. 'min' has to be of type <number>.")
   }
 
-  if (percent < 0 || percent > 1) {
-    throw new RangeError(`TextForce.Math::percentBool(): Parameter 'percent' has to be in range 0-1. Passed in value: ${percent}`)
+  if (probabality < 0 || probabality > 1) {
+    throw new RangeError(`TextForce.Math::percentBool(): Parameter 'probabality' has to be in range 0-1. Passed in value: ${percent}`)
   }
 }
 

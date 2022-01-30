@@ -1,8 +1,8 @@
 class SceneManager {
   constructor(game) {
     this.activeScene = null
-    this.scenes = []
-    this.game   = game
+    this.scenes      = []
+    this.game        = game
   }
 
   append(scene) {

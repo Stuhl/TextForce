@@ -21,37 +21,10 @@ const updateArrow = (arrowState) => {
   arrow.setY((arrowState * 20) + 100)
 }
 
-const updateArrowHandler = (pressed) => {
-  console.log("press")
-  if (pressed === "UP") {
-    arrowState--
-  }
-
-  if (pressed === "DOWN") {
-    arrowState++
-  }
-
-  if (arrowState > 2) {
-    arrowState = 0
-  }
-
-  if (arrowState < 0) {
-    arrowState = 2
-  }
-
-  if (pressed === "ENTER") {
-    console.log(1)
-    scene.sceneManager.start("ingame")
-  }
-
-  updateArrow(arrowState)
-}
-
 const create = (scene) => {
   let arrowState = 0
 
   const updateArrowHandler = (pressed) => {
-    console.log("press")
     if (pressed === "UP") {
       arrowState--
     }
@@ -69,7 +42,6 @@ const create = (scene) => {
     }
 
     if (pressed === "ENTER") {
-      console.log(1)
       scene.sceneManager.start("ingame")
     }
 
