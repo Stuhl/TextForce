@@ -59,18 +59,6 @@ const testGame = () => {
 
 // testGame()
 
-const testPubSub = () => {
-  const pubSub = new TextForce.PubSub()
-
-
-  const logger = () => {}
-
-  pubSub.publish("input")
-  pubSub.subscribe(2, logger)
-  pubSub.unsubscribe("input", logger)
-  console.log(pubSub)
-}
-
 
 const testGameClass = () => {
   const codSound = new URL("./test_assets/lvl_up_sound.mp3", import.meta.url)
@@ -470,21 +458,6 @@ const testGamepad = () => {
 
 // testGamepad()
 
-
-const testMathModule = () => {
-  const Gamemath = TextForce.Math
-
-  // const randomInt = Gamemath.randomInt(-100, 0)
-  // const randomChoice = Gamemath.randomChoice(["ATTACK", "DEFEND", "HEAL"])
-  // const scatter = Gamemath.scatter(-10, 2)
-  // const forwardScatter = Gamemath.forwardScatter(10, 1)
-  // const percentBool = Gamemath.percentBool(0.5)
-
-  // console.log(percentBool)
-}
-
-// testMathModule()
-
 const testCanvas = () => {
   const gameCanvas = new TextForce.Canvas({
     width: 500,
@@ -516,7 +489,6 @@ const testCanvas = () => {
 
 import menu   from "./testScene"
 import ingame from "./ingameScene"
-
 
 const makeTestGame = () => {
   const game = new TextForce.Game({

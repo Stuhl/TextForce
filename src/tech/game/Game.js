@@ -9,11 +9,7 @@ import PubSub        from "../pubsub/Pubsub"
 
 class Game {
   constructor(config) {
-    this.gameEventEmitter = new PubSub()
-
-    config.input.eventEmitter = this.gameEventEmitter
-
-    this.input            = InputFactory.create(config.input)
+    this.eventEmitter     = new PubSub()
     this.soundStorage     = new SoundStorage()
     this.sceneManager     = new SceneManager(this)
     this.objectManager    = new ObjectManager(this)
@@ -47,13 +43,29 @@ class Game {
       }
     }
 
-    this.init(config)
+    this.events = {
+      on() {
+
+      },
+
+      off() {
+
+      }
+    }
+
+    this._init(config)
   }
 
-  init(config) {
-    this.input.attach()
+  _init(config) {
+    this._defineGameEvents(config)
     this._loadScenes(config.scenes)
     this._start(config.activeScene)
+  }
+
+  _defineGameEvents(config) {
+    config.input.eventEmitter = this.eventEmitter
+    this.input                = InputFactory.create(config.input)
+    this.input.attach()
   }
 
   _loadScenes(scenes) {

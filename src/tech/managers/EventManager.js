@@ -3,13 +3,6 @@ class EventManager {
     this.events = {}
   }
 
-  _hasProperty(name) {
-    const hasProperty = this.events.hasOwnProperty(name)
-    if (!hasProperty) {
-      throw new Error(this.errorHandlingTitle + " Event not found.")
-    }
-  }
-
   register(name) {
     this.events[name] = this.events[name] || new PubSub()
     return this.events[name]
@@ -23,6 +16,13 @@ class EventManager {
   get(name) {
     this._hasProperty(name)
     return this.events[name]
+  }
+
+  _hasProperty(name) {
+    const hasProperty = this.events.hasOwnProperty(name)
+    if (!hasProperty) {
+      throw new Error(this.errorHandlingTitle + " Event not found.")
+    }
   }
 }
 
