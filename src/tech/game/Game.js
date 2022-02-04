@@ -3,8 +3,9 @@ import Text          from "../text/Text"
 import Sound         from "../sound/Sound"
 import Group         from "../group/Group"
 import SoundStorage  from "../systems/SoundStorage"
-import SceneManager  from "../managers/SceneManager"
-import ObjectManager from "../managers/ObjectManager"
+import SceneManager  from "../managers/scene/SceneManager"
+import ObjectManager from "../managers/object/ObjectManager"
+import EventManager  from "../managers/event/EventManager"
 import PubSub        from "../pubsub/Pubsub"
 
 class Game {
@@ -13,7 +14,10 @@ class Game {
     this.soundStorage     = new SoundStorage()
     this.sceneManager     = new SceneManager(this)
     this.objectManager    = new ObjectManager(this)
+    this.eventManager     = new EventManager()
     this.preload          = config.preload
+
+    this.input            = null
 
     const self = this
 
@@ -21,35 +25,6 @@ class Game {
       sound(name, path) {
         const soundFile = new Sound(name, path)
         self.soundStorage.append(soundFile)
-      }
-    }
-
-    this.add = {
-      text(name, innerHTML) {
-        const textObject = new Text(name, innerHTML)
-        self.objectManager.append(textObject)
-        document.body.appendChild(textObject.element)
-      },
-      textObject(textObject) {
-        self.objectManager.append(textObject)
-        document.body.appendChild(textObject.element)
-      }
-    }
-
-    this.remove = {
-      textObject(textObject) {
-        self.objectManager.delete(textObject)
-        document.body.removeChild(textObject.element)
-      }
-    }
-
-    this.events = {
-      on() {
-
-      },
-
-      off() {
-
       }
     }
 

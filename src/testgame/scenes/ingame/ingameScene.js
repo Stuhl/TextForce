@@ -1,4 +1,4 @@
-import TextForce from "./TextForce"
+import TextForce from "../../../TextForce"
 
 const ingame = new TextForce.Text("ingame", "You are ingame.")
 
@@ -11,6 +11,7 @@ const create = (scene) => {
 
 
 const render = (scene) => {
+  const ingameText = scene.objectManager.get("ingame")
   ingame.show()
 }
 

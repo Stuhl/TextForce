@@ -62,6 +62,9 @@ class Keyboard extends AbstractInput {
   }
 
   _handleKeyDown(event) {
+    if (event.key !== "F5") {
+      event.preventDefault()
+    }
     const pressed = this.keys[event.key]
     if (pressed !== undefined) {
       event.preventDefault()

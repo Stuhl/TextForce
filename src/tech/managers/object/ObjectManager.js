@@ -14,6 +14,10 @@ class ObjectManager {
     return this.objects.find(obj => obj.name === name)
   }
 
+  getObjects() {
+    return this.objects
+  }
+
   delete(object) {
     this._assertDelete(object)
     const index = this.objects.indexOf(object)
