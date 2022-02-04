@@ -1,11 +1,109 @@
+import Text from "../text/Text"
+
 class Scene {
   constructor(config) {
     this._assertConstructor(config)
 
-    this.name    = config.name
-    this.create  = config.create
-    this.destroy = config.destroy
-    this.render  = config.render
+    this.name          = config.name
+    this.create        = config.create
+    this.destroy       = config.destroy
+    this.render        = config.render
+
+    this.eventEmitter  = null
+    this.sceneManager  = null
+    this.objectManager = null
+    this.eventManager  = null
+    this.input         = null
+  }
+
+  init(game) {
+    this._defineGameObjectFactory()
+    this._defineManagersAndEvents(game)
+    this._defineInput(game)
+    this._defineSceneEvents()
+  }
+
+  destroyScene(game) {
+    const promise = new Promise((resolve) => {
+      this._destroyGameObjects()
+      this._destroySceneEvents()
+      resolve("done")
+    })
+
+    promise.then(() => {
+      this._destroyDefinitions()
+    })
+
+    this.destroy(this, game)
+  }
+
+  _defineGameObjectFactory() {
+    const self = this
+
+    this.add = {
+      text(config) {
+        const textObject = new Text(config.name, config.text)
+        textObject.setX(config.x)
+        textObject.setY(config.y)
+        self.objectManager.append(textObject)
+        document.body.appendChild(textObject.element)
+      },
+      textObject(textObject) {
+        self.objectManager.append(textObject)
+        document.body.appendChild(textObject.element)
+      }
+    }
+
+    this.remove = {
+      text(name) {
+        const textObject = self.objectManager.get(name)
+        self.objectManager.delete(textObject)
+        document.body.removeChild(textObject.element)
+      }
+    }
+  }
+  _defineManagersAndEvents(game) {
+    this.events        = game.events
+    this.sceneManager  = game.sceneManager
+    this.objectManager = game.objectManager
+    this.eventManager  = game.eventManager
+  }
+  _defineInput(game) {
+    this.input = game.input
+  }
+  _defineSceneEvents() {
+    const self = this
+
+    this.events = {
+      on(event, handler) {
+        if (event === "input") {
+          self.input.on("input", handler)
+        }
+      },
+      addEventListener(gameObject, event, handler) {
+        self.eventManager.addEventListener(gameObject, event, handler)
+      }
+    }
+  }
+
+  _destroyGameObjects() {
+    const objects = this.objectManager.getObjects()
+
+    objects.forEach(gameObject => {
+      document.body.removeChild(gameObject.element)
+    })
+    this.objectManager.reset()
+  }
+  _destroySceneEvents() {
+    this.input.resetEvents()
+    this.eventManager.removeAllEventListeners()
+  }
+  _destroyDefinitions() {
+    this.eventEmitter  = null
+    this.sceneManager  = null
+    this.objectManager = null
+    this.eventManager  = null
+    this.input         = null
   }
 
   _assertConstructor(config) {
@@ -23,7 +121,6 @@ class Scene {
       throw new Error("Scene::constructor(): Parameter 'config' is not a object. It must be of type object.")
     }
   }
-
   _configHasNameProperty(config) {
     if (!config.name) {
       throw new Error("Scene::constructor(): Missing property 'name' in config.")
@@ -33,7 +130,6 @@ class Scene {
       throw new Error("Scene::constructor(): Value of property 'name' is not a string. Must be of type <string>.")
     }
   }
-
   _configHasNeededMethods(config) {
     const missingFunctions = this._getMissingFunctions(config)
 
@@ -44,7 +140,6 @@ class Scene {
 
     this._CheckIfKeysAreFunctions(config)
   }
-
   _getMissingFunctions(config) {
     const functions = ["create", "render", "destroy"]
     const missing = []
@@ -57,7 +152,6 @@ class Scene {
 
     return missing
   }
-
   _CheckIfKeysAreFunctions(config) {
     const functions = ["create", "render", "destroy"]
 

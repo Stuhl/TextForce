@@ -37,6 +37,10 @@ class Input extends AbstractInput {
   on(event, callback) {
     this.inputDevice.on(event, callback)
   }
+
+  resetEvents() {
+    this.inputDevice.eventEmitter.reset()
+  }
 }
 
 export default Input

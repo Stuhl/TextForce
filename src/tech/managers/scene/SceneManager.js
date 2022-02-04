@@ -31,6 +31,7 @@ class SceneManager {
 
   start(name) {
     this._isSceneExisting("start", name)
+
     const scene       = this._getScene(name)
     const activeScene = this.getActiveScene()
 
@@ -39,14 +40,18 @@ class SceneManager {
     }
 
     if (this.activeScene === null) {
+
       this.activeScene = scene
+      scene.init(this.game)
       this._runScene(scene)
+
     } else {
-      // this.clearMemory()
-      this.activeScene.destroy(this.game)
-      this._clearEvents()
+
+      this.activeScene.destroyScene(this.game)
       this.activeScene = scene
+      scene.init(this.game)
       this._runScene(scene)
+
     }
   }
 
@@ -54,15 +59,8 @@ class SceneManager {
     this._isASceneActive()
     const activeScene = this.getActiveScene()
 
-    activeScene.destroy()
+    activeScene.destroyScene()
     this.activeScene = null
-  }
-
-  _clearEvents() {
-    console.log(1)
-    document.body.innerHTML = document.body.innerHTML
-    // document.body = document.body.cloneNode(true)
-    // document.body.appendChild(document.body)
   }
 
   _getScene(name) {
@@ -70,8 +68,8 @@ class SceneManager {
   }
 
   _runScene(scene) {
-    scene.create(this.game)
-    scene.render(this.game)
+    scene.create(scene, this.game)
+    scene.render(scene, this.game)
   }
 
   _isSceneExisting(caller, name) {

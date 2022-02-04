@@ -487,8 +487,8 @@ const testCanvas = () => {
 }
 
 
-import menu   from "./testScene"
-import ingame from "./ingameScene"
+// import menu   from "./menuScene"
+// import ingame from "./ingameScene"
 
 const makeTestGame = () => {
   const game = new TextForce.Game({
@@ -504,10 +504,10 @@ const makeTestGame = () => {
       }
     },
     scenes: [menu, ingame],
-    activeScene: "scene1"
+    activeScene: "menu"
   })
 }
 
-makeTestGame()
+// makeTestGame()
 
 // testCanvas()
