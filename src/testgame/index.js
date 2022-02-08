@@ -19,10 +19,11 @@ const game = new TextForce.Game({
   },
   scenes: [menuScene, menuSettings, ingameScene],
   activeScene: "menu",
-  preload() {
+  preload(game) {
+    const switchSound = new URL("./assets/switch.wav", import.meta.url)
+    const bashSound   = new URL("./assets/bash.wav", import.meta.url)
 
+    game.store.sound("switch", switchSound.href)
+    game.store.sound("bash", bashSound.href)
   }
 })
-
-
-console.log(game)

@@ -1,13 +1,16 @@
 import TextForce from "../../../TextForce"
 
 class Menu {
-  constructor(scene) {
+  constructor(scene, game) {
     this.scene         = scene
+    this.game          = game
 
     this.startText     = new TextForce.Text("start game", "Start game")
     this.loadText      = new TextForce.Text("load game", "Load game")
     this.settingsText  = new TextForce.Text("settings", "Settings")
     this.arrow         = new TextForce.Text("arrow", ">")
+    this.switchSound   = game.store.getSound("switch")
+    this.bashSound     = game.store.getSound("bash")
 
     this.arrowState    = 0
   }
@@ -53,6 +56,13 @@ class Menu {
   }
 
   updateArrowHandler(pressed) {
+    if (pressed === "UP" || pressed === "DOWN") {
+      if (!this.switchSound.paused) {
+        this.switchSound.stop()
+      }
+      this.switchSound.play()
+    }
+
     if (pressed === "UP") {
       this.arrowState--
     }
@@ -71,9 +81,11 @@ class Menu {
 
     if (pressed === "ENTER") {
       if (this.arrowState === 2) {
-        this.scene.sceneManager.start("menu-settings")
+        this.bashSound.play()
+        this.game.scenes.start("menu-settings", {
+          score: 100
+        })
       }
-      // this.scene.sceneManager.start("ingame")
     }
 
     this.updateArrow()

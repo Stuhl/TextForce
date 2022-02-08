@@ -6,23 +6,31 @@ class Animation {
     this.element  = config.element
     this.effect   = config.effect
 
-    this.timing   = TimingFunction[config.timing]
-    this.done     = false
-    this.resolve  = null
+    this.timingFunction     = TimingFunction[config.timing]
+    this.requestAnimationID = null
+
+    this.now     = 0
+    this.last    = 0
+    this.delta   = 0
+    this.counter = 0
+    this.done    = false
+    this.resolve = null
 
     this.effect = this.effect.bind(this)
   }
 
-  loop(milliseconds) {
-    const fraction = this._getFraction(milliseconds)
+  loop() {
+    const count    = this._getCount()
+    const fraction = this._getFraction(count)
     const progress = this.timing(fraction)
 
     this.runEffect(progress)
 
-    if (milliseconds < this.duration) {
-      requestAnimationFrame(this.loop.bind(this))
+    if (this.counter < this.duration) {
+      this.requestAnimationID = requestAnimationFrame(this.loop.bind(this))
     } else {
       this.done = true
+      cancelAnimationFrame(this.requestAnimationID)
       this.resolve(this.done)
     }
   }
@@ -30,7 +38,7 @@ class Animation {
   start() {
     return new Promise((resolve) => {
       this.resolve = resolve
-      requestAnimationFrame(this.loop.bind(this))
+      this.requestAnimationID = requestAnimationFrame(this.loop.bind(this))
     })
   }
 
@@ -40,6 +48,23 @@ class Animation {
 
   timing(fraction) {
     return this.timingFunction(fraction)
+  }
+
+  _timestamp() {
+    return performance.now()
+  }
+
+  _getCount() {
+    if (this.last === 0) {
+      this.last = this._timestamp()
+    }
+
+    this.now      = this._timestamp()
+    this.delta    = this.now - this.last
+    this.last     = this.now
+    this.counter += this.delta
+
+    return this.counter
   }
 
   _getFraction(milliseconds) {

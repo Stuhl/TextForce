@@ -29,7 +29,7 @@ class SceneManager {
     this.game.objectManager.reset()                     // 6
   }
 
-  start(name) {
+  start(name, data) {
     this._isSceneExisting("start", name)
 
     const scene       = this._getScene(name)
@@ -40,17 +40,16 @@ class SceneManager {
     }
 
     if (this.activeScene === null) {
-
       this.activeScene = scene
       scene.init(this.game)
-      this._runScene(scene)
+      this._runScene(scene, data)
 
     } else {
 
       this.activeScene.destroyScene(this.game)
       this.activeScene = scene
       scene.init(this.game)
-      this._runScene(scene)
+      this._runScene(scene, data)
 
     }
   }
@@ -67,9 +66,8 @@ class SceneManager {
     return this.scenes.find(scene => scene.name === name)
   }
 
-  _runScene(scene) {
-    scene.create(scene, this.game)
-    scene.render(scene, this.game)
+  _runScene(scene, data) {
+    scene.start(scene, this.game, data)
   }
 
   _isSceneExisting(caller, name) {

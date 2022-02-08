@@ -1,4 +1,9 @@
-import Text from "../text/Text"
+import ObjectManager     from "../managers/object/ObjectManager"
+import EventManager      from "../managers/event/EventManager"
+import Text              from "../text/Text"
+
+import GameObjectsFacade from "./facade/GameObject"
+import SceneEvents       from "./facade/SceneEvents"
 
 class Scene {
   constructor(config) {
@@ -14,6 +19,11 @@ class Scene {
     this.objectManager = null
     this.eventManager  = null
     this.input         = null
+
+    this.data = null
+
+    this.GameObjectsFacade = new GameObjectsFacade(this, Text)
+    this.sceneEvents       = new SceneEvents(this)
   }
 
   init(game) {
@@ -21,6 +31,12 @@ class Scene {
     this._defineManagersAndEvents(game)
     this._defineInput(game)
     this._defineSceneEvents()
+  }
+
+  start(scene, game, data) {
+    this._loadData(data)
+    this.create(scene, game)
+    this.render(scene, game)
   }
 
   destroyScene(game) {
@@ -32,58 +48,31 @@ class Scene {
 
     promise.then(() => {
       this._destroyDefinitions()
+      this.destroy(this, game)
     })
-
-    this.destroy(this, game)
   }
 
   _defineGameObjectFactory() {
-    const self = this
-
-    this.add = {
-      text(config) {
-        const textObject = new Text(config.name, config.text)
-        textObject.setX(config.x)
-        textObject.setY(config.y)
-        self.objectManager.append(textObject)
-        document.body.appendChild(textObject.element)
-      },
-      textObject(textObject) {
-        self.objectManager.append(textObject)
-        document.body.appendChild(textObject.element)
-      }
-    }
-
-    this.remove = {
-      text(name) {
-        const textObject = self.objectManager.get(name)
-        self.objectManager.delete(textObject)
-        document.body.removeChild(textObject.element)
-      }
-    }
+    this.add    = this.GameObjectsFacade.getAdd()
+    this.remove = this.GameObjectsFacade.getRemove()
   }
   _defineManagersAndEvents(game) {
-    this.events        = game.events
     this.sceneManager  = game.sceneManager
-    this.objectManager = game.objectManager
-    this.eventManager  = game.eventManager
+    this.objectManager = new ObjectManager()
+    this.eventManager  = new EventManager()
   }
   _defineInput(game) {
     this.input = game.input
   }
   _defineSceneEvents() {
-    const self = this
+    this.events = this.sceneEvents.getEvents()
+  }
+  _destroyData() {
+    this.data = null
+  }
 
-    this.events = {
-      on(event, handler) {
-        if (event === "input") {
-          self.input.on("input", handler)
-        }
-      },
-      addEventListener(gameObject, event, handler) {
-        self.eventManager.addEventListener(gameObject, event, handler)
-      }
-    }
+  _loadData(data) {
+    this.data = data
   }
 
   _destroyGameObjects() {

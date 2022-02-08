@@ -8,35 +8,42 @@ import ObjectManager from "../managers/object/ObjectManager"
 import EventManager  from "../managers/event/EventManager"
 import PubSub        from "../pubsub/Pubsub"
 
+import AssetStorage  from "./facade/AssetStorage"
+import Scenes        from "./facade/Scenes"
+
 class Game {
   constructor(config) {
+    this.preload          = config.preload
+
     this.eventEmitter     = new PubSub()
     this.soundStorage     = new SoundStorage()
     this.sceneManager     = new SceneManager(this)
-    this.objectManager    = new ObjectManager(this)
-    this.eventManager     = new EventManager()
-    this.preload          = config.preload
-
     this.input            = null
 
-    const self = this
-
-    this.store = {
-      sound(name, path) {
-        const soundFile = new Sound(name, path)
-        self.soundStorage.append(soundFile)
-      }
-    }
+    this.assetStorage     = new AssetStorage(this, Sound)
+    this.scenesFacade     = new Scenes(this)
 
     this._init(config)
   }
 
   _init(config) {
+    this._defineAssetStorage()
+    this._defineScenes()
     this._defineGameEvents(config)
+    this.preload(this)
     this._loadScenes(config.scenes)
-    this._start(config.activeScene)
+
+    this._checkIfAssetsAreLoaded().then(done => {
+      this._start(config.activeScene)
+    })
   }
 
+  _defineAssetStorage() {
+    this.store = this.assetStorage.getStore()
+  }
+  _defineScenes() {
+    this.scenes = this.scenesFacade.getScenes()
+  }
   _defineGameEvents(config) {
     config.input.eventEmitter = this.eventEmitter
     this.input                = InputFactory.create(config.input)
@@ -49,6 +56,11 @@ class Game {
     }
   }
 
+  async _checkIfAssetsAreLoaded() {
+    await this.soundStorage.soundsAreReady()
+
+    return "assets are ready"
+  }
   _start(activeScene) {
     this.sceneManager.start(activeScene)
   }
