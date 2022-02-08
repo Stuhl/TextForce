@@ -22,23 +22,22 @@ const testAnimation = () => {
   text2.setColor(`hsla(0, 0%, 0%, 0)`)
 
 
-
   text.show()
   dmg.show()
   text2.show()
   criticalStrike.show()
 
   const criticalAnimation = new TextForce.Animation({
-    duration: 500,
+    duration: 2000,
     element : criticalStrike,
     effect  : (target, progress) => {
       target.setColor(`hsla(0, 0%, 0%, ${progress})`)
     },
-    timing  : "cubic"
+    timing  : "elastic"
   })
 
   const anim = new TextForce.Animation({
-    duration: 700,
+    duration: 200,
     element : text,
     effect  : (target, progress) => {
       target.setColor(`hsla(0, 0%, 0%, ${progress})`)
@@ -47,7 +46,7 @@ const testAnimation = () => {
   })
 
   const anim2 = new TextForce.Animation({
-    duration: 1000,
+    duration: 200,
     element : dmg,
     effect  : (target, progress) => {
       target.setColor(`hsla(0, 0%, 0%, ${progress})`)
@@ -56,7 +55,7 @@ const testAnimation = () => {
   })
 
   const anim3 = new TextForce.Animation({
-    duration: 1000,
+    duration: 200,
     element : text2,
     effect  : (target, progress) => {
       target.setColor(`hsla(0, 0%, 0%, ${progress})`)

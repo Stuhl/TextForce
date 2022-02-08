@@ -5,7 +5,7 @@ import Menu      from "./menu-component"
 let menu = null
 
 const create = (scene, game) => {
-  menu = new Menu(scene)
+  menu = new Menu(scene, game)
   menu.create()
 }
 
@@ -14,7 +14,7 @@ const render = (scene, game) => {
 }
 
 const destroy = (scene, game) => {
-  
+
 }
 
 const scene = new TextForce.Scene({
