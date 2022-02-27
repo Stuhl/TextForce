@@ -7,6 +7,7 @@ import SceneManager  from "../managers/scene/SceneManager"
 import ObjectManager from "../managers/object/ObjectManager"
 import EventManager  from "../managers/event/EventManager"
 import PubSub        from "../pubsub/Pubsub"
+import Canvas        from "../canvas/Canvas"
 
 import AssetStorage  from "./facade/AssetStorage"
 import Scenes        from "./facade/Scenes"
@@ -22,6 +23,8 @@ class Game {
 
     this.assetStorage     = new AssetStorage(this, Sound)
     this.scenesFacade     = new Scenes(this)
+
+    this.canvas           = new Canvas(config.canvas)
 
     this._init(config)
   }
@@ -58,7 +61,6 @@ class Game {
 
   async _checkIfAssetsAreLoaded() {
     await this.soundStorage.soundsAreReady()
-
     return "assets are ready"
   }
   _start(activeScene) {

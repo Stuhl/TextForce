@@ -10,11 +10,11 @@ const create = (scene, game) => {
 }
 
 const render = (scene, game) => {
-  menu.render()
+  
 }
 
 const destroy = (scene, game) => {
-
+  menu = null
 }
 
 const scene = new TextForce.Scene({

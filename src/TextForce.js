@@ -8,6 +8,8 @@ import Keyboard  from "./tech/input/low-level/keyboard/Keyboard"
 import Gamepad   from "./tech/input/low-level/gamepad/Gamepad"
 import Storage   from "./tech/storage/Storage"
 import Animation from "./tech/animation/Animation"
+import Group     from "./tech/group/Group"
+import Timing    from "./tech/animation/TimingFunction"
 
 import Canvas    from "./tech/canvas/Canvas"
 import Text      from "./tech/text/Text"
@@ -31,6 +33,8 @@ class TextForce {
   static Scene     = Scene
   static Storage   = Storage
   static Animation = Animation
+  static Timing    = Timing
+  static Group     = Group
   static Effects   = {
     Writer,
     Shake

@@ -3,6 +3,11 @@ class Text {
     this.element = this._create(innerHTML)
     this.name    = name
     this.anchor  = "standard"
+
+    this.originX = 0
+    this.originY = 0
+
+    this.setColor("hsla(0, 0%, 95%, 1)")
   }
 
   getX() {
@@ -37,7 +42,7 @@ class Text {
     }
 
     if (this.anchor === "standard") {
-      this.element.style.left = value + "px"
+      this.element.style.left = value + this.originX + "px"
     }
   }
 
@@ -49,8 +54,16 @@ class Text {
     }
 
     if (this.anchor === "standard") {
-      this.element.style.top = value + "px"
+      this.element.style.top = value + this.originY + "px"
     }
+  }
+
+  setOriginX(value) {
+    this.originX = value
+  }
+
+  setOriginY(value) {
+    this.originY = value
   }
 
   setText(newText) {

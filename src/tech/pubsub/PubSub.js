@@ -53,10 +53,6 @@ class PubSub extends AbstractPubSub {
     if (typeof name !== "string") {
       throw new TypeError("PubSub::publish(): Parameter 'name' is not a string. Has to be of type <string>.")
     }
-
-    // if (!this.events.hasOwnProperty(name)) {
-    //   throw new Error(`PubSub::publish(): Event '${name}' is not registered in the PubSub system.`)
-    // }
   }
 
   _assertSubscribe(name, callback) {
