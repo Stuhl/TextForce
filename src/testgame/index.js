@@ -17,6 +17,11 @@ const game = new TextForce.Game({
       "Backspace": "BACK"
     }
   },
+  canvas: {
+    width     : 500,
+    height    : 500,
+    background: "hsla(0, 0%, 5%, 1)" 
+  },
   scenes: [menuScene, menuSettings, ingameScene],
   activeScene: "menu",
   preload(game) {

@@ -9,6 +9,9 @@ class Menu {
     this.loadText      = new TextForce.Text("load game", "Load game")
     this.settingsText  = new TextForce.Text("settings", "Settings")
     this.arrow         = new TextForce.Text("arrow", ">")
+    this.group         = new TextForce.Group(
+      [this.startText, this.loadText, this.settingsText, this.arrow]
+    )
     this.switchSound   = game.store.getSound("switch")
     this.bashSound     = game.store.getSound("bash")
 
@@ -20,31 +23,32 @@ class Menu {
     this._registerObjects()
   }
 
-  render() {
-    this.startText.show()
-    this.loadText.show()
-    this.settingsText.show()
-    this.arrow.show()
-  }
-
   _registerObjects() {
     this.scene.add.textObject(this.startText)
     this.scene.add.textObject(this.loadText)
     this.scene.add.textObject(this.settingsText)
     this.scene.add.textObject(this.arrow)
 
-    this.startText.setX(100)
-    this.startText.setY(100)
+    this.startText.setX(0)
+    this.startText.setY(0)
 
-    this.loadText.setX(100)
-    this.loadText.setY(120)
+    this.loadText.setX(0)
+    this.loadText.setY(20)
 
-    this.settingsText.setX(100)
-    this.settingsText.setY(140)
+    this.settingsText.setX(0)
+    this.settingsText.setY(40)
 
-    this.arrow.setX(80)
-    this.arrow.setY(100)
+    this.arrow.setX(-20)
+    this.arrow.setY(0)
     this.arrow.scale(1.5)
+
+    this.startText.show()
+    this.loadText.show()
+    this.settingsText.show()
+    this.arrow.show()
+
+    this.group.translateX(100)
+    this.group.translateY(100)
   }
 
   _defineEvents() {
@@ -52,7 +56,7 @@ class Menu {
   }
 
   updateArrow() {
-    this.arrow.setY((this.arrowState * 20) + 100)
+    this.arrow.setY((this.arrowState * 20))
   }
 
   updateArrowHandler(pressed) {

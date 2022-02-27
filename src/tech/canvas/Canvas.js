@@ -2,15 +2,17 @@ class Canvas {
   constructor(config) {
     this.width   = config.width
     this.height  = config.height
-    this.element = this._create()
+    this.element = this._createCanvas()
+
     this.setBackgroundColor(config.background)
+    document.body.appendChild(this.element)
   }
 
   setBackgroundColor(hsla) {
     this.element.style.backgroundColor = hsla
   }
 
-  _create() {
+  _createCanvas() {
     const gameArea = document.createElement("DIV")
     this._setInitialStyle(gameArea, this.width, this.height)
     return gameArea

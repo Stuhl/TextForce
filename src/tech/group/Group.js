@@ -13,39 +13,44 @@ class Group {
     return this.y
   }
 
-  setX(value) {
-    this.x = value
-  }
-
-  setY(value) {
-    this.y = value
-  }
-
   getElements() {
     return this.elements
   }
 
   translateX(value) {
     this.elements.forEach(element => {
-      const currentX = element.getX() - this.getX()
-      element.setX(currentX + value)
+      const elementX = element.getX()
+
+      element.setOriginX(value)
+      element.setX(elementX)
     })
 
-    this.setX(value)
+    this._setX(value)
   }
 
   translateY(value) {
     this.elements.forEach(element => {
       const currentY = element.getY()
-      element.setY(currentY + value)
-      this.setY(value)
+
+      element.setOriginY(value)
+      element.setY(currentY)
     })
+
+    this._setY(value)
   }
 
   scale(value) {
     this.elements.forEach(element => {
       element.scale(value)
     })
+  }
+
+  _setX(value) {
+    this.x = value
+  }
+
+  _setY(value) {
+    this.y = value
   }
 }
 

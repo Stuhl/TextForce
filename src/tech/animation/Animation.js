@@ -6,7 +6,7 @@ class Animation {
     this.element  = config.element
     this.effect   = config.effect
 
-    this.timingFunction     = TimingFunction[config.timing]
+    this.timingFunction     = TimingFunction.get(config.timing)
     this.requestAnimationID = null
 
     this.now     = 0

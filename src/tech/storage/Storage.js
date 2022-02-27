@@ -1,7 +1,12 @@
 class Storage {
   constructor(config) {
-    this.name = config.name
+    this.name      = config.name
     this.saveGames = {}
+    this.global    = {}
+  }
+
+  saveGlobal(data) {
+    this.global = data
   }
 
   save(name, data) {
