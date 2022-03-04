@@ -1,8 +1,11 @@
 class Group {
   constructor(elements) {
-    this.elements = elements
-    this.x        = 0
-    this.y        = 0
+    this.container = document.createElement("DIV")
+    this.elements  = elements
+    this.x         = 0
+    this.y         = 0
+
+    this._setup()
   }
 
   getX() {
@@ -17,32 +20,39 @@ class Group {
     return this.elements
   }
 
-  translateX(value) {
-    this.elements.forEach(element => {
-      const elementX = element.getX()
+  getContainer() {
+    return this.container
+  }
 
-      element.setOriginX(value)
-      element.setX(elementX)
-    })
+  translateX(value) {
+    this.container.style.left = value + "px"
+    // this.elements.forEach(element => {
+    //   const elementX = element.getX()
+    //
+    //   element.setX(elementX + value)
+    // })
 
     this._setX(value)
   }
 
   translateY(value) {
-    this.elements.forEach(element => {
-      const currentY = element.getY()
-
-      element.setOriginY(value)
-      element.setY(currentY)
-    })
+    this.container.style.top = value + "px"
+    //
+    // this.elements.forEach(element => {
+    //   const currentY = element.getY()
+    //
+    //   element.setY(currentY + value)
+    // })
 
     this._setY(value)
   }
 
   scale(value) {
-    this.elements.forEach(element => {
-      element.scale(value)
-    })
+    // this.container.style.transform = "top left"
+    this.container.style.transform += `scale(${value})`
+    // this.elements.forEach(element => {
+    //   element.scale(value)
+    // })
   }
 
   _setX(value) {
@@ -51,6 +61,20 @@ class Group {
 
   _setY(value) {
     this.y = value
+  }
+
+  _setup() {
+    this._setInitialStyle()
+    for (let element of this.elements) {
+      this.container.appendChild(element.element)
+      element.element.style.position = "absolute"
+    }
+  }
+
+  _setInitialStyle() {
+    this.container.style.position = "relative"
+    this.container.style.margin   = 0
+    this.container.style.padding  = 0
   }
 }
 
