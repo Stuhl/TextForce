@@ -4,9 +4,6 @@ class Text {
     this.name    = name
     this.anchor  = "standard"
 
-    this.originX = 0
-    this.originY = 0
-
     this.setColor("hsla(0, 0%, 95%, 1)")
   }
 
@@ -42,7 +39,7 @@ class Text {
     }
 
     if (this.anchor === "standard") {
-      this.element.style.left = value + this.originX + "px"
+      this.element.style.left = value + "px"
     }
   }
 
@@ -54,16 +51,8 @@ class Text {
     }
 
     if (this.anchor === "standard") {
-      this.element.style.top = value + this.originY + "px"
+      this.element.style.top = value + "px"
     }
-  }
-
-  setOriginX(value) {
-    this.originX = value
-  }
-
-  setOriginY(value) {
-    this.originY = value
   }
 
   setText(newText) {
@@ -85,7 +74,11 @@ class Text {
   }
 
   scale(value) {
-    this.element.style.transform = `scale(${value})`
+    this.element.style.transform += `scale(${value})`
+  }
+
+  rotate(degrees) {
+    this.element.style.transform += `rotate(${degrees}deg)`
   }
 
   show() {

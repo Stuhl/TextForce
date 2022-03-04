@@ -15,7 +15,6 @@ import Canvas    from "./tech/canvas/Canvas"
 import Text      from "./tech/text/Text"
 
 
-
 // EFFECTS
 import Writer   from "./tech/effects/writer/Writer.js"
 import Shake    from "./tech/effects/shake/high-level/Shake.js"
