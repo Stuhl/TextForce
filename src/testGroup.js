@@ -6,12 +6,12 @@ const hpValue       = new TextForce.Text("hp value", "100 / 100")
 const hpGroup       = new TextForce.Group([hpDescription, hpValue])
 
 
-hpDescription.setX(100)
-hpDescription.setY(50)
+hpDescription.setX(0)
+hpDescription.setY(20)
 hpDescription.setColor("hsla(0, 0%, 0%, 1)")
 
-hpValue.setX(130)
-hpValue.setY(50)
+hpValue.setX(30)
+hpValue.setY(20)
 // hpValue.rotate(100)
 hpValue.setColor("hsla(0, 0%, 0%, 1)")
 
@@ -19,12 +19,12 @@ hpValue.setColor("hsla(0, 0%, 0%, 1)")
 hpDescription.show()
 hpValue.show()
 
-document.body.appendChild(hpGroup.getContainer())
+document.body.appendChild(hpDescription.element)
+document.body.appendChild(hpValue.element)
 
+hpGroup._calculateAndSetAnchor()
 
-hpGroup.scale(1.5)
+hpGroup.scale(1)
 hpGroup.translateX(100)
-// hpGroup.translateX(200)
 hpGroup.translateY(100)
-
-console.log(hpGroup)
+hpGroup._drawAnchor()

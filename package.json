@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "jest --verbose",
-    "dev" : "parcel src/index.html --no-cache"
+    "dev": "parcel src/index.html --no-cache"
   },
   "repository": {
     "type": "git",
