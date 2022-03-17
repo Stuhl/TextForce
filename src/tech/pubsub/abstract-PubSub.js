@@ -1,3 +1,6 @@
+/**
+ * This is the abstract pub sub class. Use this to code a implementation of a PubSub class
+ */
 class AbstractPubSub {
   constructor() {
     if (!this.subscribe) {

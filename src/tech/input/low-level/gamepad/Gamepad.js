@@ -12,7 +12,7 @@ class Gamepad extends AbstractInput {
   constructor(config) {
     super("Gamepad")
     interfaceGamepad(config)
-
+  
     this.keys         = config.keys
     this.listening    = false
     this.gamepad      = null

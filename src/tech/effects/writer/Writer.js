@@ -1,4 +1,4 @@
-import wait           from "../../utility/wait.js"
+import Utility           from "../../utility/utility.js"
 import AbstractEffect from "../AbstractEffect.js"
 
 class Writer extends AbstractEffect {

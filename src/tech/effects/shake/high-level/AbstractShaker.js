@@ -1,3 +1,4 @@
+
 class AbstractShaker {
   constructor(name) {
     if (!this.start) {

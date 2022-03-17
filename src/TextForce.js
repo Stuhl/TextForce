@@ -14,6 +14,8 @@ import Timing    from "./tech/animation/TimingFunction"
 import Canvas    from "./tech/canvas/Canvas"
 import Text      from "./tech/text/Text"
 
+import Utility   from "./tech/utility/utility"
+
 
 // EFFECTS
 import Writer   from "./tech/effects/writer/Writer.js"
@@ -34,6 +36,7 @@ class TextForce {
   static Animation = Animation
   static Timing    = Timing
   static Group     = Group
+  static Utility   = Utility
   static Effects   = {
     Writer,
     Shake

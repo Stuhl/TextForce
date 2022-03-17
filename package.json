@@ -20,8 +20,14 @@
   "homepage": "https://github.com/Stuhl/TextForce#readme",
   "description": "",
   "devDependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.16.8",
-    "jest": "^27.4.7",
-    "parcel": "^2.2.0"
+    "@babel/plugin-transform-modules-commonjs": "^7.17.7",
+    "esdoc": "^1.1.0",
+    "esdoc-standard-plugin": "^1.0.0",
+    "jest": "^27.5.1",
+    "parcel": "^2.3.2"
+  },
+  "dependencies": {
+    "esdoc-ecmascript-proposal-plugin": "^1.0.0",
+    "madge": "^5.0.1"
   }
 }

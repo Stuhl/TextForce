@@ -1,9 +1,8 @@
 import TextForce    from "../TextForce"
-
 import menuScene    from "./scenes/menu/menuScene"
 import menuSettings from "./scenes/menu/settingsScene"
-
 import ingameScene  from "./scenes/ingame/ingameScene"
+
 
 const game = new TextForce.Game({
   input: {
@@ -20,7 +19,7 @@ const game = new TextForce.Game({
   canvas: {
     width     : 500,
     height    : 500,
-    background: "hsla(0, 0%, 5%, 1)" 
+    background: "hsla(0, 0%, 5%, 1)"
   },
   scenes: [menuScene, menuSettings, ingameScene],
   activeScene: "menu",
